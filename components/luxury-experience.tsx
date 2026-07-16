@@ -20,15 +20,15 @@ const services = [
 
 
 const films = [
-  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.jpg", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful correction and refinement." },
+  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.jpg", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful polishing and refinement." },
   { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.jpg", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
   { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.jpg", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
   { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.jpg", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
 ];
 
 const featuredDetails = [
-  { image: "/media-v27/images/porsche-rear.webp", vehicle: "Porsche", service: "Paint refinement + protection", note: "Curves, reflections, and gloss presented with a finish worthy of the badge." },
-  { image: "/media-v27/images/foam-supercar-side.webp", vehicle: "Supercar Foam Prep", service: "Safe wash + decontamination", note: "A careful first stage that removes contamination without compromising the finish." },
+  { image: "/media-v27/images/porsche-rear.webp", vehicle: "Lotus Elise", service: "Exterior refinement + protection", note: "Lightweight sports-car bodywork presented with crisp reflections and a clean, uniform finish." },
+  { image: "/media-v27/images/foam-supercar-side.webp", vehicle: "Lotus Elise", service: "Safe wash + foam preparation", note: "A careful first stage that loosens contamination without compromising the finish." },
   { image: "/media-v27/images/black-camaro.webp", vehicle: "Classic Camaro", service: "Paint enhancement", note: "Deep black paint refined for richer depth and crisp outdoor reflections." },
   { image: "/media-v27/images/tesla-exterior.webp", vehicle: "Tesla Model Y", service: "Premium full detail", note: "Modern daily-driver care with a cleaner, sharper, more uniform finish." }
 ];
@@ -59,7 +59,7 @@ const faqs = [
 
 const results = [
   { image: "/media-v27/images/mercedes-front.webp", label: "Mercedes gloss restoration" },
-  { image: "/media-v27/images/porsche-wheel.webp", label: "Precision wheel and paint finish" },
+  { image: "/media-v27/images/porsche-wheel.webp", label: "Lotus Elise wheel and paint finish" },
   { image: "/media-v27/images/grand-prix.webp", label: "Classic Grand Prix presentation" },
   { image: "/media-v27/images/charger.webp", label: "Performance sedan finish" }
 ];
@@ -107,10 +107,10 @@ function ViewportVideo({ src, poster, label, className = "" }: { src: string; po
 
 function LancerTransformation() {
   return <section className="lancer-story" aria-labelledby="lancer-title">
-    <div className="lancer-head"><p className="eyebrow">BEFORE / AFTER</p><h2 id="lancer-title">One car. Two completely different impressions.</h2><p>The white Mitsubishi Lancer footage is presented as a true transformation—not two unrelated clips.</p></div>
+    <div className="lancer-head"><p className="eyebrow">TWO-ANGLE REVEAL</p><h2 id="lancer-title">The same Mitsubishi Lancer, captured from both sides.</h2><p>These are two separate original clips—not a duplicated or reversed video. Together they show the completed finish from complementary angles.</p></div>
     <div className="lancer-films">
-      <article><span>BEFORE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.jpg" label="Mitsubishi Lancer before detailing" /></article>
-      <article><span>AFTER</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.jpg" label="Mitsubishi Lancer after detailing" /></article>
+      <article><span>DRIVER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.jpg" label="Mitsubishi Lancer driver-side finish reveal" /></article>
+      <article><span>PASSENGER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.jpg" label="Mitsubishi Lancer passenger-side finish reveal" /></article>
     </div>
   </section>;
 }
@@ -278,7 +278,7 @@ export function LuxuryExperience() {
     </section>
 
     <section id="marine-and-rv" className="marine">
-      <div className="marine-image"><Image src="/media-v27/images/white-suv.webp" alt="White SUV detailed by Cole's Mobile Detailing" fill sizes="100vw" /></div>
+      <div className="marine-image"><Image src="/images/boat shine.jpg" alt="Detailed boat finish with visible water beading" fill sizes="100vw" /></div>
       <div className="marine-copy"><p className="eyebrow">RV & MARINE</p><h2>Large surfaces. Same obsession.</h2><p>Specialized mobile care for fiberglass, gel coat, vinyl, rubber roofing and marine finishes throughout Southern Indiana.</p><div className="price-lines"><span>RV wash <b>$10–12/ft</b></span><span>Wash + wax <b>$15–20/ft</b></span><span>Oxidation removal <b>$25–35/ft</b></span></div></div>
     </section>
 
@@ -333,7 +333,7 @@ export function LuxuryExperience() {
     </section>
 
     <section id="book" className="final-cta">
-      <div className="final-car"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy Porsche after detailing" fill sizes="100vw" /></div><div className="final-shade" />
+      <div className="final-car"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy Lotus Elise after detailing" fill sizes="100vw" /></div><div className="final-shade" />
       <p>THE FINISH YOU REMEMBER.</p><h2>Make every reflection count.</h2><div className="cta-actions"><a href="tel:+18126295544">Call 812-629-5544</a><a href="sms:+18126295544">Text to book</a></div>
     </section>
 

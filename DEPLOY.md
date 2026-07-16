@@ -1,16 +1,10 @@
-# Cole's Mobile Detailing v2.7
+# Cole's Mobile Detailing v2.8
 
-This package is prepared for GitHub + Netlify.
+Corrected media audit release.
 
-## Upload
-1. Extract the ZIP.
-2. Upload the contents inside the extracted folder to the repository root.
-3. Do not upload the outer version folder itself.
-4. Make sure `public/media-v27`, `public/models`, `app`, and `components` are included.
+- RV & Marine now uses actual boat/RV imagery.
+- Lotus Elise images are labeled as Lotus Elise, not Porsche.
+- Mitsubishi Lancer clips are presented as two separate original angles, not before/after or reversed duplicates.
+- Gallery captions were reviewed and uncertain models use accurate generic labels instead of guesses.
 
-Every individual media file is below GitHub's browser upload limit. The original uncompressed phone videos are intentionally not included.
-
-## Netlify
-- Build command: `npm run build`
-- Publish directory: `.next`
-- Node version: 20
+Upload the project contents to the repository root and preserve the public folder structure.
