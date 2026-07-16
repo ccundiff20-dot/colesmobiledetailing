@@ -20,16 +20,17 @@ const services = [
 
 
 const films = [
-  { src: "/videos/corvette-reveal.mp4", poster: "/video-posters/corvette-reveal.jpg", eyebrow: "PAINT DEPTH", title: "The finish comes alive.", copy: "A slow walkaround that lets the reflection speak for itself." },
-  { src: "/videos/mercedes-finish.mp4", poster: "/video-posters/mercedes-finish.jpg", eyebrow: "FINAL REVEAL", title: "Clean lines. Clear gloss.", copy: "Premium exterior detailing presented through real client work." },
-  { src: "/videos/rv-restoration.mp4", poster: "/video-posters/rv-restoration.jpg", eyebrow: "LARGE-FORMAT CARE", title: "From weathered to renewed.", copy: "A real RV transformation showing the value of patient restoration." }
+  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.jpg", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful correction and refinement." },
+  { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.jpg", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
+  { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.jpg", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
+  { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.jpg", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
 ];
 
 const featuredDetails = [
-  { image: "/images/featured/blue-shelby.webp", vehicle: "Shelby Mustang", service: "Gloss enhancement + protection", note: "Performance paint brought back to a sharper, cleaner reflection." },
-  { image: "/images/featured/yellow-corvette.webp", vehicle: "C3 Corvette", service: "Classic-car detail", note: "Careful surface preparation and finish work for a timeless body line." },
-  { image: "/images/featured/black-camaro.webp", vehicle: "1969 Camaro", service: "Paint enhancement", note: "Deep black paint refined for richer depth and crisp outdoor reflections." },
-  { image: "/images/featured/acura-mdx.webp", vehicle: "Acura MDX Type S", service: "Premium full detail", note: "Luxury SUV presentation with a clean, polished, uniform finish." }
+  { image: "/media-v27/images/porsche-rear.webp", vehicle: "Porsche", service: "Paint refinement + protection", note: "Curves, reflections, and gloss presented with a finish worthy of the badge." },
+  { image: "/media-v27/images/foam-supercar-side.webp", vehicle: "Supercar Foam Prep", service: "Safe wash + decontamination", note: "A careful first stage that removes contamination without compromising the finish." },
+  { image: "/media-v27/images/black-camaro.webp", vehicle: "Classic Camaro", service: "Paint enhancement", note: "Deep black paint refined for richer depth and crisp outdoor reflections." },
+  { image: "/media-v27/images/tesla-exterior.webp", vehicle: "Tesla Model Y", service: "Premium full detail", note: "Modern daily-driver care with a cleaner, sharper, more uniform finish." }
 ];
 
 const reviews = [
@@ -57,10 +58,10 @@ const faqs = [
 ];
 
 const results = [
-  { image: "/images/enhanced/black corvette.webp", label: "Mirror-finish Corvette" },
-  { image: "/images/enhanced/blue mustang.webp", label: "Deep-gloss Mustang" },
-  { image: "/images/enhanced/boat shine.webp", label: "Marine gloss restoration" },
-  { image: "/images/enhanced/chrome rim.webp", label: "Precision wheel finish" }
+  { image: "/media-v27/images/mercedes-front.webp", label: "Mercedes gloss restoration" },
+  { image: "/media-v27/images/porsche-wheel.webp", label: "Precision wheel and paint finish" },
+  { image: "/media-v27/images/grand-prix.webp", label: "Classic Grand Prix presentation" },
+  { image: "/media-v27/images/charger.webp", label: "Performance sedan finish" }
 ];
 
 function useSmoothScroll() {
@@ -88,6 +89,31 @@ function CursorGlow() {
   return <motion.div className="cursor-glow" style={{ x: sx, y: sy }} aria-hidden="true" />;
 }
 
+
+function ViewportVideo({ src, poster, label, className = "" }: { src: string; poster: string; label: string; className?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && entry.intersectionRatio > .55) video.play().catch(() => undefined);
+      else video.pause();
+    }, { threshold: [0, .55, .85], rootMargin: "-8% 0px -8% 0px" });
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+  return <video ref={ref} className={className} muted loop playsInline preload="metadata" poster={poster} aria-label={label}><source src={src} type="video/mp4" /></video>;
+}
+
+function LancerTransformation() {
+  return <section className="lancer-story" aria-labelledby="lancer-title">
+    <div className="lancer-head"><p className="eyebrow">BEFORE / AFTER</p><h2 id="lancer-title">One car. Two completely different impressions.</h2><p>The white Mitsubishi Lancer footage is presented as a true transformation—not two unrelated clips.</p></div>
+    <div className="lancer-films">
+      <article><span>BEFORE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.jpg" label="Mitsubishi Lancer before detailing" /></article>
+      <article><span>AFTER</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.jpg" label="Mitsubishi Lancer after detailing" /></article>
+    </div>
+  </section>;
+}
 function BeforeAfter() {
   const [position, setPosition] = useState(50);
   return <div className="before-after" style={{ "--split": `${position}%` } as React.CSSProperties}>
@@ -113,11 +139,14 @@ export function LuxuryExperience() {
   const titleY = useTransform(scrollYProgress, [0, 1], [0, -120]);
   const selected = services[active];
   const nav = useMemo(() => [
-    { label: "Treatments", href: "#treatments", note: "Interior · Full Detail · Correction" },
-    { label: "Ceramic", href: "#ceramic", note: "Hydrophobic gloss protection" },
-    { label: "Results", href: "#results", note: "Real transformations" },
-    { label: "Marine & RV", href: "#marine-and-rv", note: "Large-format mobile care" },
-    { label: "Book", href: "#book", note: "Reserve your finish" }
+    { label: "Services", href: "/services", note: "Interior · Full Detail · Exterior" },
+    { label: "Ceramic", href: "/ceramic-coatings", note: "1-year and 7-year protection" },
+    { label: "Correction", href: "/paint-correction", note: "Restore clarity and depth" },
+    { label: "Gallery", href: "/gallery", note: "Real photos and films" },
+    { label: "RV + Marine", href: "/rv-marine", note: "Large-format mobile care" },
+    { label: "Fleet", href: "/fleet", note: "Reliable recurring service" },
+    { label: "About", href: "/about", note: "Owner-operated in Southern Indiana" },
+    { label: "Book", href: "/book", note: "Request your appointment" }
   ], []);
 
   useEffect(() => {
@@ -167,7 +196,7 @@ export function LuxuryExperience() {
       <button className="menu-button" aria-label="Toggle navigation" onClick={() => setMenu(!menu)}>{menu ? "Close" : "Menu"}</button>
     </header>
     <AnimatePresence>{menu && <motion.div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .35 }}>
-      <motion.div className="menu-visual" initial={{ scale: 1.08, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.04, opacity: 0 }} transition={{ duration: .8, ease: [0.16,1,0.3,1] }}><Image src="/images/enhanced/black corvette.webp" alt="" fill sizes="100vw" priority /><div /></motion.div>
+      <motion.div className="menu-visual" initial={{ scale: 1.08, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.04, opacity: 0 }} transition={{ duration: .8, ease: [0.16,1,0.3,1] }}><Image src="/media-v27/images/porsche-rear.webp" alt="" fill sizes="100vw" priority /><div /></motion.div>
       <div className="mobile-menu-top"><div className="mobile-menu-brand"><Image src="/images/brand/coles-mobile-detailing-badge-small.webp" alt="Cole's Mobile Detailing logo" width={54} height={54} /><span>COLE&apos;S / MOBILE DETAILING</span></div><button onClick={() => setMenu(false)} aria-label="Close navigation"><i /><i /><span>Close</span></button></div>
       <div className="menu-layout"><div className="menu-intro"><span>PRIVATE MOBILE DETAILING</span><strong>Choose your<br/>next chapter.</strong><p>Premium vehicle care delivered throughout Newburgh, Evansville and Southern Indiana.</p></div>
       <nav>{nav.map((item,index) => <motion.a initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .12 + index*.07, duration:.6, ease:[.16,1,.3,1] }} onClick={() => setMenu(false)} key={item.label} href={item.href}><small>0{index+1}</small><span><b>{item.label}</b><em>{item.note}</em></span><i aria-hidden="true" /></motion.a>)}</nav></div>
@@ -176,7 +205,7 @@ export function LuxuryExperience() {
 
     <section id="top" ref={heroRef} className="hero">
       <motion.div className="hero-car" style={{ y: carY, scale: carScale }}>
-        <Image src="/images/enhanced/zi6 corvette.webp" alt="Black Corvette detailed by Cole's Mobile Detailing" fill priority sizes="100vw" />
+        <Image src="/media-v27/images/porsche-rear.webp" alt="Porsche detailed by Cole's Mobile Detailing" fill priority sizes="100vw" />
       </motion.div>
       <div className="hero-shade" /><div className="hero-noise" /><div className="light-sweep" />
       <motion.div className="hero-copy" style={{ y: titleY }}>
@@ -218,6 +247,8 @@ export function LuxuryExperience() {
       </div>
     </section>
 
+    <LancerTransformation />
+
     <section id="treatments" className="treatments">
       <div className="section-head"><p className="eyebrow">CURATED TREATMENTS</p><h2>Choose the finish.</h2></div>
       <div className="treatment-grid">
@@ -233,7 +264,7 @@ export function LuxuryExperience() {
     <section id="ceramic" className="coating-story">
       <div className="coating-copy"><p className="eyebrow">CERAMIC PROTECTION</p><h2>Protection you can see.</h2><p>Hydrophobic performance. Richer color. Easier maintenance. A glass-like barrier engineered to preserve the finish beneath it.</p><a href="tel:+18126295544">Request a coating consultation</a></div>
       <div className="droplet-field" aria-hidden="true">{Array.from({ length: 24 }).map((_, i) => <motion.i key={i} style={{ left: `${(i*37)%96}%`, top: `${(i*53)%85}%` }} animate={{ y: [0, 10, 0], scale: [1, 1.12, 1] }} transition={{ duration: 2.6 + (i%5)*.35, repeat: Infinity, delay: i*.07 }} />)}</div>
-      <div className="coating-image"><Image src="/images/enhanced/boat shine.webp" alt="Water beading on a protected glossy surface" fill sizes="100vw" /></div>
+      <div className="coating-image"><Image src="/media-v27/images/foam-supercar-front.webp" alt="Performance car covered in foam during safe preparation" fill sizes="100vw" /></div>
       <div className="coating-rings" aria-hidden="true"><span /><span /><span /></div>
     </section>
 
@@ -247,14 +278,14 @@ export function LuxuryExperience() {
     </section>
 
     <section id="marine-and-rv" className="marine">
-      <div className="marine-image"><Image src="/images/enhanced/rv before and after.webp" alt="RV exterior before and after restoration" fill sizes="100vw" /></div>
+      <div className="marine-image"><Image src="/media-v27/images/white-suv.webp" alt="White SUV detailed by Cole's Mobile Detailing" fill sizes="100vw" /></div>
       <div className="marine-copy"><p className="eyebrow">RV & MARINE</p><h2>Large surfaces. Same obsession.</h2><p>Specialized mobile care for fiberglass, gel coat, vinyl, rubber roofing and marine finishes throughout Southern Indiana.</p><div className="price-lines"><span>RV wash <b>$10–12/ft</b></span><span>Wash + wax <b>$15–20/ft</b></span><span>Oxidation removal <b>$25–35/ft</b></span></div></div>
     </section>
 
     <section className="featured-details" aria-labelledby="featured-title">
       <div className="featured-heading"><p className="eyebrow">FEATURED DETAILS</p><h2 id="featured-title">Every vehicle tells a different story.</h2><p>Classics, performance cars, luxury SUVs and daily drivers—each one receives a process tailored to the finish in front of us.</p></div>
       <div className="featured-grid">{featuredDetails.map((item,index)=><motion.article key={item.image} initial={{opacity:0,y:60}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:index*.08}}><div className="featured-image"><Image src={item.image} alt={`${item.vehicle} detailed by Cole's Mobile Detailing`} fill sizes="(max-width:900px) 100vw, 50vw" /></div><div className="featured-copy"><span>0{index+1}</span><div><p>{item.service}</p><h3>{item.vehicle}</h3><small>{item.note}</small></div></div></motion.article>)}</div>
-    </section>
+    <a className="editorial-link" href="/gallery">Explore the full vehicle gallery</a></section>
 
     <section className="coating-packages">
       <div className="package-heading"><p className="eyebrow">CERAMIC COATING OPTIONS</p><h2>Choose how long you want the finish protected.</h2></div>
@@ -275,7 +306,7 @@ export function LuxuryExperience() {
     </section>
 
     <section className="about-story" aria-labelledby="about-story-title">
-      <div className="about-story-image"><Image src="/images/featured/black-camaro.webp" alt="Black 1969 Camaro detailed by Cole's Mobile Detailing" fill sizes="(max-width:900px) 100vw, 48vw" /></div>
+      <div className="about-story-image"><Image src="/media-v27/images/black-camaro.webp" alt="Black classic Camaro detailed by Cole's Mobile Detailing" fill sizes="(max-width:900px) 100vw, 48vw" /></div>
       <div className="about-story-copy"><p className="eyebrow">THE STORY</p><h2 id="about-story-title">Started in high school. Built to become something more.</h2><p>Cole started detailing while he was still in high school because he wanted to earn more, work for himself, and build a business he could be proud of.</p><p>Today, he studies business while operating Cole&apos;s Mobile Detailing and Digital Forge. That same entrepreneurial mindset shows up in every appointment: direct communication, careful work, and a standard that never depends on whether the vehicle is a daily driver or an exotic.</p><div className="about-story-meta"><span>Owner-operated</span><span>Business student</span><span>Serving Southern Indiana</span></div></div>
     </section>
 
@@ -302,10 +333,10 @@ export function LuxuryExperience() {
     </section>
 
     <section id="book" className="final-cta">
-      <div className="final-car"><Image src="/images/enhanced/black corvette.webp" alt="Glossy black Corvette at sunset" fill sizes="100vw" /></div><div className="final-shade" />
+      <div className="final-car"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy Porsche after detailing" fill sizes="100vw" /></div><div className="final-shade" />
       <p>THE FINISH YOU REMEMBER.</p><h2>Make every reflection count.</h2><div className="cta-actions"><a href="tel:+18126295544">Call 812-629-5544</a><a href="sms:+18126295544">Text to book</a></div>
     </section>
 
-    <footer><a className="brand footer-brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge.webp" alt="Cole's Mobile Detailing badge" width={76} height={76} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a><div><a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a><a href="tel:+18126295544">812-629-5544</a></div><div className="footer-legal"><p>© 2026 Cole&apos;s Mobile Detailing · Newburgh, Indiana</p><a href="https://sketchfab.com/3d-models/free-porsche-911-carrera-4s-d01b254483794de3819786d93e0e1ebf" target="_blank" rel="noreferrer">Porsche 911 3D model by Karol Miklas / Lionsharp Studios · CC BY-SA 4.0</a></div></footer>
+    <footer><a className="brand footer-brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge.webp" alt="Cole's Mobile Detailing badge" width={76} height={76} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a><div><a href="/services">Services</a><a href="/ceramic-coatings">Ceramic coatings</a><a href="/paint-correction">Paint correction</a><a href="/rv-marine">RV & Marine</a><a href="/fleet">Fleet</a><a href="/gallery">Gallery</a><a href="/about">About</a><a href="/book">Book</a><a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a><a href="tel:+18126295544">812-629-5544</a></div><div className="footer-legal"><p>© 2026 Cole&apos;s Mobile Detailing · Newburgh, Indiana</p><a href="https://sketchfab.com/3d-models/free-porsche-911-carrera-4s-d01b254483794de3819786d93e0e1ebf" target="_blank" rel="noreferrer">Porsche 911 3D model by Karol Miklas / Lionsharp Studios · CC BY-SA 4.0</a></div></footer>
   </main>;
 }
