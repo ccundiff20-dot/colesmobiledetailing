@@ -33,9 +33,27 @@ const featuredDetails = [
 ];
 
 const reviews = [
-  { name: "Google Customer", text: "Excellent attention to detail and communication from start to finish." },
-  { name: "Local Customer", text: "The vehicle looked better than expected and the mobile service was incredibly convenient." },
-  { name: "Repeat Customer", text: "Professional, reliable and careful with every surface." }
+  { name: "Luke Cassel", detail: "Interior + Exterior Detail", text: "Cole is punctual, professional, talented, and quick. The car looks showroom ready." },
+  { name: "Jack Melotte", detail: "Porsche Detail", text: "Cole did an excellent job on my Porsche. Very professional, on time, and the result was amazing." },
+  { name: "Joe Vollman", detail: "Truck Detail", text: "Cole went above and beyond to ensure my truck was thoroughly cleaned. I will definitely be a repeat customer." },
+  { name: "Christy Bailey", detail: "Mobile Detail", text: "My car feels like a new car. It was great being able to stay at work while Cole detailed it outside." },
+  { name: "Mike Cates", detail: "Van Detail", text: "Cole made my van look brand new, like I had just bought it off the dealership lot." },
+  { name: "Peyton Robinson", detail: "Pet Hair Removal", text: "Cole did an amazing job removing all the dog hair. I will definitely use him again." }
+];
+
+const processSteps = [
+  { number: "01", title: "Inspect", text: "We assess the vehicle, its condition, and the finish you want before recommending the right service." },
+  { number: "02", title: "Restore", text: "Interior surfaces and exterior paint are carefully cleaned, decontaminated, and refined using safe processes." },
+  { number: "03", title: "Protect", text: "Sealant or ceramic protection is applied to preserve gloss and make future maintenance easier." },
+  { number: "04", title: "Deliver", text: "A final inspection confirms the details are finished before your vehicle is returned." }
+];
+
+const faqs = [
+  { q: "How far do you travel?", a: "Most appointments are within roughly 30 miles of Boonville. Travel outside the normal service area may include an additional fee." },
+  { q: "How much notice is required?", a: "Appointments require at least 24 hours of notice and are not guaranteed until confirmed." },
+  { q: "Do prices change based on condition?", a: "Yes. Final pricing may change for excessive dirt, staining, pet hair, mold, oxidation, or other conditions that require additional time." },
+  { q: "Do you work on luxury, classic, and performance vehicles?", a: "Yes. Cole has worked on Porsche, Corvette, Tesla, Lexus, classic muscle cars, performance vehicles, daily drivers, trucks, RVs, and boats." },
+  { q: "What ceramic coating options are available?", a: "One-year ceramic protection starts at $399, and seven-year ceramic coating packages start at $799. Paint preparation or correction may affect the final quote." }
 ];
 
 const results = [
@@ -248,7 +266,22 @@ export function LuxuryExperience() {
 
     <section className="proof-section">
       <div className="proof-stats"><div><strong>80+</strong><span>Five-star reviews</span></div><div><strong>4+</strong><span>Years in business</span></div><div><strong>100%</strong><span>Mobile service</span></div></div>
-      <div className="review-grid">{reviews.map((review,index)=><article key={index}><div>★★★★★</div><p>“{review.text}”</p><span>{review.name}</span></article>)}</div>
+      <div className="review-grid">{reviews.map((review,index)=><article key={index}><div>★★★★★</div><p>“{review.text}”</p><span>{review.name}</span><small>{review.detail}</small></article>)}</div>
+    </section>
+
+    <section className="process-section" aria-labelledby="process-title">
+      <div className="process-heading"><p className="eyebrow">THE PROCESS</p><h2 id="process-title">Built on pride. Finished without shortcuts.</h2><p>Every appointment follows a deliberate process designed around the vehicle in front of us.</p></div>
+      <div className="process-grid">{processSteps.map((step,index)=><motion.article key={step.number} initial={{opacity:0,y:34}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.35}} transition={{duration:.65,delay:index*.08}}><span>{step.number}</span><h3>{step.title}</h3><p>{step.text}</p></motion.article>)}</div>
+    </section>
+
+    <section className="about-story" aria-labelledby="about-story-title">
+      <div className="about-story-image"><Image src="/images/featured/black-camaro.webp" alt="Black 1969 Camaro detailed by Cole's Mobile Detailing" fill sizes="(max-width:900px) 100vw, 48vw" /></div>
+      <div className="about-story-copy"><p className="eyebrow">THE STORY</p><h2 id="about-story-title">Started in high school. Built to become something more.</h2><p>Cole started detailing while he was still in high school because he wanted to earn more, work for himself, and build a business he could be proud of.</p><p>Today, he studies business while operating Cole&apos;s Mobile Detailing and Digital Forge. That same entrepreneurial mindset shows up in every appointment: direct communication, careful work, and a standard that never depends on whether the vehicle is a daily driver or an exotic.</p><div className="about-story-meta"><span>Owner-operated</span><span>Business student</span><span>Serving Southern Indiana</span></div></div>
+    </section>
+
+    <section className="faq-section" aria-labelledby="faq-title">
+      <div className="faq-heading"><p className="eyebrow">BEFORE YOU BOOK</p><h2 id="faq-title">Questions, answered clearly.</h2></div>
+      <div className="faq-list">{faqs.map((item,index)=><details key={item.q}><summary><span>0{index+1}</span>{item.q}<i aria-hidden="true" /></summary><p>{item.a}</p></details>)}</div>
     </section>
 
     <section id="booking-builder" className="booking-builder">
