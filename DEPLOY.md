@@ -1,16 +1,16 @@
-# Cole's Mobile Detailing v2.4
+# Cole's Mobile Detailing v2.7
 
-Upload the contents of this folder to the repository root.
+This package is prepared for GitHub + Netlify.
 
-Required asset paths include:
+## Upload
+1. Extract the ZIP.
+2. Upload the contents inside the extracted folder to the repository root.
+3. Do not upload the outer version folder itself.
+4. Make sure `public/media-v27`, `public/models`, `app`, and `components` are included.
 
-- `public/models/porsche/scene-optimized.glb`
-- `public/videos/`
-- `public/video-posters/`
-- `public/images/featured/`
+Every individual media file is below GitHub's browser upload limit. The original uncompressed phone videos are intentionally not included.
 
-Netlify settings:
-
+## Netlify
 - Build command: `npm run build`
 - Publish directory: `.next`
-- Node version: `20`
+- Node version: 20
