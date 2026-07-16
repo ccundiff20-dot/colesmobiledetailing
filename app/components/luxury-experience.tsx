@@ -20,15 +20,15 @@ const services = [
 
 
 const films = [
-  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.jpg", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful correction and refinement." },
-  { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.jpg", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
-  { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.jpg", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
-  { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.jpg", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
+  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.webp", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful polishing and refinement." },
+  { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.webp", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
+  { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.webp", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
+  { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.webp", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
 ];
 
 const featuredDetails = [
-  { image: "/media-v27/images/porsche-rear.webp", vehicle: "Porsche", service: "Paint refinement + protection", note: "Curves, reflections, and gloss presented with a finish worthy of the badge." },
-  { image: "/media-v27/images/foam-supercar-side.webp", vehicle: "Supercar Foam Prep", service: "Safe wash + decontamination", note: "A careful first stage that removes contamination without compromising the finish." },
+  { image: "/media-v27/images/porsche-rear.webp", vehicle: "Lotus Elise", service: "Exterior refinement + protection", note: "Lightweight sports-car bodywork presented with crisp reflections and a clean, uniform finish." },
+  { image: "/media-v27/images/foam-supercar-side.webp", vehicle: "Lotus Elise", service: "Safe wash + foam preparation", note: "A careful first stage that loosens contamination without compromising the finish." },
   { image: "/media-v27/images/black-camaro.webp", vehicle: "Classic Camaro", service: "Paint enhancement", note: "Deep black paint refined for richer depth and crisp outdoor reflections." },
   { image: "/media-v27/images/tesla-exterior.webp", vehicle: "Tesla Model Y", service: "Premium full detail", note: "Modern daily-driver care with a cleaner, sharper, more uniform finish." }
 ];
@@ -59,7 +59,7 @@ const faqs = [
 
 const results = [
   { image: "/media-v27/images/mercedes-front.webp", label: "Mercedes gloss restoration" },
-  { image: "/media-v27/images/porsche-wheel.webp", label: "Precision wheel and paint finish" },
+  { image: "/media-v27/images/porsche-wheel.webp", label: "Lotus Elise wheel and paint finish" },
   { image: "/media-v27/images/grand-prix.webp", label: "Classic Grand Prix presentation" },
   { image: "/media-v27/images/charger.webp", label: "Performance sedan finish" }
 ];
@@ -92,25 +92,78 @@ function CursorGlow() {
 
 function ViewportVideo({ src, poster, label, className = "" }: { src: string; poster: string; label: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [attached, setAttached] = useState(false);
+
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
+    const mobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+
+    const nearObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setAttached(true);
+    }, { rootMargin: mobile ? "180px 0px" : "420px 0px", threshold: 0.01 });
+
+    const playObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.58) {
+        window.dispatchEvent(new CustomEvent("cmd-video-active", { detail: src }));
+        video.play().catch(() => undefined);
+      } else {
+        video.pause();
+      }
+    }, { threshold: [0, .35, .58, .85], rootMargin: "-6% 0px -6% 0px" });
+
+    const stopOther = (event: Event) => {
+      const activeSrc = (event as CustomEvent<string>).detail;
+      if (activeSrc !== src) {
+        video.pause();
+        if (mobile && video.currentTime > 0) {
+          video.removeAttribute("src");
+          video.load();
+          setAttached(false);
+        }
+      }
+    };
+
+    nearObserver.observe(video);
+    playObserver.observe(video);
+    window.addEventListener("cmd-video-active", stopOther);
+    return () => {
+      nearObserver.disconnect();
+      playObserver.disconnect();
+      window.removeEventListener("cmd-video-active", stopOther);
+      video.pause();
+    };
+  }, [src]);
+
+  return <video ref={ref} className={className} muted loop playsInline preload="none" poster={poster} aria-label={label} src={attached ? src : undefined} />;
+}
+
+function DeferredPorscheExperience() {
+  const shellRef = useRef<HTMLDivElement>(null);
+  const [mount, setMount] = useState(false);
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && entry.intersectionRatio > .55) video.play().catch(() => undefined);
-      else video.pause();
-    }, { threshold: [0, .55, .85], rootMargin: "-8% 0px -8% 0px" });
-    observer.observe(video);
+      if (!entry.isIntersecting) return;
+      const activate = () => setMount(true);
+      if ("requestIdleCallback" in window) {
+        (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(activate, { timeout: 1400 });
+      } else globalThis.setTimeout(activate, 700);
+      observer.disconnect();
+    }, { rootMargin: "120px 0px", threshold: 0.01 });
+    observer.observe(shell);
     return () => observer.disconnect();
   }, []);
-  return <video ref={ref} className={className} muted loop playsInline preload="metadata" poster={poster} aria-label={label}><source src={src} type="video/mp4" /></video>;
+  return <div ref={shellRef}>{mount ? <PorscheExperience /> : <section className="porsche-experience porsche-shell-loading" aria-label="Immersive vehicle experience"><div className="porsche-sticky"><div className="porsche-fallback" /><div className="porsche-vignette" /><div className="porsche-loading-copy"><span>IMMERSIVE FINISH STUDY</span><strong>Scroll to begin the reveal.</strong></div></div></section>}</div>;
 }
 
 function LancerTransformation() {
   return <section className="lancer-story" aria-labelledby="lancer-title">
-    <div className="lancer-head"><p className="eyebrow">BEFORE / AFTER</p><h2 id="lancer-title">One car. Two completely different impressions.</h2><p>The white Mitsubishi Lancer footage is presented as a true transformation—not two unrelated clips.</p></div>
+    <div className="lancer-head"><p className="eyebrow">TWO-ANGLE REVEAL</p><h2 id="lancer-title">The same Mitsubishi Lancer, captured from both sides.</h2><p>These are two separate original clips—not a duplicated or reversed video. Together they show the completed finish from complementary angles.</p></div>
     <div className="lancer-films">
-      <article><span>BEFORE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.jpg" label="Mitsubishi Lancer before detailing" /></article>
-      <article><span>AFTER</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.jpg" label="Mitsubishi Lancer after detailing" /></article>
+      <article><span>DRIVER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.webp" label="Mitsubishi Lancer driver-side finish reveal" /></article>
+      <article><span>PASSENGER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.webp" label="Mitsubishi Lancer passenger-side finish reveal" /></article>
     </div>
   </section>;
 }
@@ -128,7 +181,6 @@ function BeforeAfter() {
 export function LuxuryExperience() {
   useSmoothScroll();
   const [active, setActive] = useState(0);
-  const filmVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(true);
   const [booking, setBooking] = useState({ vehicle: "Sedan", service: "Full Detail", date: "", name: "", phone: "" });
@@ -148,28 +200,6 @@ export function LuxuryExperience() {
     { label: "About", href: "/about", note: "Owner-operated in Southern Indiana" },
     { label: "Book", href: "/book", note: "Request your appointment" }
   ], []);
-
-  useEffect(() => {
-    const videos = filmVideoRefs.current.filter((video): video is HTMLVideoElement => Boolean(video));
-    if (!videos.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
-          videos.forEach((other) => {
-            if (other !== video) other.pause();
-          });
-          video.play().catch(() => undefined);
-        } else {
-          video.pause();
-        }
-      });
-    }, { threshold: [0, 0.55, 0.85], rootMargin: "-8% 0px -8% 0px" });
-
-    videos.forEach((video) => observer.observe(video));
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("cmd-intro-seen");
@@ -219,7 +249,7 @@ export function LuxuryExperience() {
       <div className="hero-index"><span>01</span><div /><span>05</span></div>
     </section>
 
-    <PorscheExperience />
+    <DeferredPorscheExperience />
 
     <section className="statement">
       <p className="eyebrow">THE STANDARD</p>
@@ -236,9 +266,7 @@ export function LuxuryExperience() {
       <div className="film-grid">
         {films.map((film, index) => <motion.article className={`film-card film-card-${index+1}`} key={film.src} initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .22 }} transition={{ duration: .8, delay: index*.08, ease: [0.16,1,0.3,1] }}>
           <div className="film-frame">
-            <video ref={element => { filmVideoRefs.current[index] = element; }} muted loop playsInline preload="metadata" poster={film.poster} onMouseEnter={event => event.currentTarget.play()} onMouseLeave={event => event.currentTarget.pause()} onFocus={event => event.currentTarget.play()} onBlur={event => event.currentTarget.pause()} aria-label={film.title}>
-              <source src={film.src} type="video/mp4" />
-            </video>
+            <ViewportVideo src={film.src} poster={film.poster} label={film.title} />
             <button type="button" className="film-play" onClick={event => { const video = event.currentTarget.parentElement?.querySelector("video"); if (!video) return; video.paused ? video.play() : video.pause(); }} aria-label={`Play or pause ${film.title}`}><span /></button>
             <div className="film-shade" />
           </div>
@@ -278,7 +306,7 @@ export function LuxuryExperience() {
     </section>
 
     <section id="marine-and-rv" className="marine">
-      <div className="marine-image"><Image src="/media-v27/images/white-suv.webp" alt="White SUV detailed by Cole's Mobile Detailing" fill sizes="100vw" /></div>
+      <div className="marine-image"><Image src="/images/boat shine.jpg" alt="Detailed boat finish with visible water beading" fill sizes="100vw" /></div>
       <div className="marine-copy"><p className="eyebrow">RV & MARINE</p><h2>Large surfaces. Same obsession.</h2><p>Specialized mobile care for fiberglass, gel coat, vinyl, rubber roofing and marine finishes throughout Southern Indiana.</p><div className="price-lines"><span>RV wash <b>$10–12/ft</b></span><span>Wash + wax <b>$15–20/ft</b></span><span>Oxidation removal <b>$25–35/ft</b></span></div></div>
     </section>
 
@@ -333,7 +361,7 @@ export function LuxuryExperience() {
     </section>
 
     <section id="book" className="final-cta">
-      <div className="final-car"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy Porsche after detailing" fill sizes="100vw" /></div><div className="final-shade" />
+      <div className="final-car"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy Lotus Elise after detailing" fill sizes="100vw" /></div><div className="final-shade" />
       <p>THE FINISH YOU REMEMBER.</p><h2>Make every reflection count.</h2><div className="cta-actions"><a href="tel:+18126295544">Call 812-629-5544</a><a href="sms:+18126295544">Text to book</a></div>
     </section>
 
