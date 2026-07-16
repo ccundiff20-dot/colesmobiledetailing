@@ -18,6 +18,13 @@ const services = [
   { id: "04", name: "Ceramic Protection", kicker: "LOCK IN THE FINISH", price: "Custom quote", image: "/images/enhanced/ceramic caoted van.webp", copy: "Long-term hydrophobic protection with richer color, easier maintenance and a finish that stays visually alive." }
 ];
 
+
+const films = [
+  { src: "/videos/corvette-reveal.mp4", poster: "/video-posters/corvette-reveal.jpg", eyebrow: "PAINT DEPTH", title: "The finish comes alive.", copy: "A slow walkaround that lets the reflection speak for itself." },
+  { src: "/videos/mercedes-finish.mp4", poster: "/video-posters/mercedes-finish.jpg", eyebrow: "FINAL REVEAL", title: "Clean lines. Clear gloss.", copy: "Premium exterior detailing presented through real client work." },
+  { src: "/videos/rv-restoration.mp4", poster: "/video-posters/rv-restoration.jpg", eyebrow: "LARGE-FORMAT CARE", title: "From weathered to renewed.", copy: "A real RV transformation showing the value of patient restoration." }
+];
+
 const results = [
   { image: "/images/enhanced/black corvette.webp", label: "Mirror-finish Corvette" },
   { image: "/images/enhanced/blue mustang.webp", label: "Deep-gloss Mustang" },
@@ -56,7 +63,7 @@ function BeforeAfter() {
     <Image src="/images/enhanced/before and after.webp" alt="Vehicle interior before and after detailing" fill sizes="(max-width: 900px) 100vw, 70vw" className="ba-base" />
     <div className="ba-overlay"><Image src="/images/enhanced/before and after.webp" alt="Cleaned vehicle interior result" fill sizes="(max-width: 900px) 100vw, 70vw" /></div>
     <input aria-label="Compare before and after result" type="range" min="0" max="100" value={position} onChange={e => setPosition(Number(e.target.value))} />
-    <div className="ba-line"><span>↔</span></div>
+    <div className="ba-line"><span aria-hidden="true" /></div>
     <span className="ba-label before">Before</span><span className="ba-label after">After</span>
   </div>;
 }
@@ -101,14 +108,14 @@ export function LuxuryExperience() {
     <header className="nav-shell">
       <a className="brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge-small.webp" alt="" width={42} height={42} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a>
       <nav className="desktop-nav">{nav.slice(0,4).map(item => <a key={item.label} href={item.href}>{item.label}</a>)}</nav>
-      <a className="book-pill" href="tel:+18126295544">Book a Detail <span>↗</span></a>
+      <a className="book-pill" href="tel:+18126295544">Book a Detail</a>
       <button className="menu-button" aria-label="Toggle navigation" onClick={() => setMenu(!menu)}>{menu ? "Close" : "Menu"}</button>
     </header>
     <AnimatePresence>{menu && <motion.div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .35 }}>
       <motion.div className="menu-visual" initial={{ scale: 1.08, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.04, opacity: 0 }} transition={{ duration: .8, ease: [0.16,1,0.3,1] }}><Image src="/images/enhanced/black corvette.webp" alt="" fill sizes="100vw" priority /><div /></motion.div>
       <div className="mobile-menu-top"><div className="mobile-menu-brand"><Image src="/images/brand/coles-mobile-detailing-badge-small.webp" alt="Cole's Mobile Detailing logo" width={54} height={54} /><span>COLE&apos;S / MOBILE DETAILING</span></div><button onClick={() => setMenu(false)} aria-label="Close navigation"><i /><i /><span>Close</span></button></div>
       <div className="menu-layout"><div className="menu-intro"><span>PRIVATE MOBILE DETAILING</span><strong>Choose your<br/>next chapter.</strong><p>Premium vehicle care delivered throughout Newburgh, Evansville and Southern Indiana.</p></div>
-      <nav>{nav.map((item,index) => <motion.a initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .12 + index*.07, duration:.6, ease:[.16,1,.3,1] }} onClick={() => setMenu(false)} key={item.label} href={item.href}><small>0{index+1}</small><span><b>{item.label}</b><em>{item.note}</em></span><i>↗</i></motion.a>)}</nav></div>
+      <nav>{nav.map((item,index) => <motion.a initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .12 + index*.07, duration:.6, ease:[.16,1,.3,1] }} onClick={() => setMenu(false)} key={item.label} href={item.href}><small>0{index+1}</small><span><b>{item.label}</b><em>{item.note}</em></span><i aria-hidden="true" /></motion.a>)}</nav></div>
       <div className="mobile-menu-footer"><div className="mobile-menu-actions"><a href="tel:+18126295544">Call now</a><a href="sms:+18126295544">Text to book</a></div><p>5.0 Google rating · 80+ reviews · By appointment</p></div>
     </motion.div>}</AnimatePresence>
 
@@ -122,7 +129,7 @@ export function LuxuryExperience() {
         <div className="hero-title" aria-label="Crafted not cleaned"><motion.span initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: .15, ease: [0.16,1,0.3,1] }}>CRAFTED.</motion.span><motion.span className="outline" initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: .28, ease: [0.16,1,0.3,1] }}>NOT CLEANED.</motion.span></div>
         <motion.div className="hero-bottom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
           <p>Luxury mobile detailing, paint correction and ceramic protection—engineered to reveal deeper gloss, sharper reflections and lasting protection.</p>
-          <a href="tel:+18126295544">Book the finish <span>↗</span></a>
+          <a href="tel:+18126295544">Book the finish</a>
         </motion.div>
       </motion.div>
       <div className="hero-index"><span>01</span><div /><span>05</span></div>
@@ -134,6 +141,26 @@ export function LuxuryExperience() {
       <p className="eyebrow">THE STANDARD</p>
       <motion.h2 initial={{ opacity: .2 }} whileInView={{ opacity: 1 }} viewport={{ amount: .45 }} transition={{ duration: 1.1 }}>Your vehicle isn&apos;t transportation. It&apos;s a surface, a silhouette, a reflection—and every detail deserves intention.</motion.h2>
       <div className="statement-meta"><span>5.0 Google rating</span><span>80+ customer reviews</span><span>Fully mobile service</span></div>
+    </section>
+
+    <section className="film-story" aria-labelledby="film-story-title">
+      <div className="film-story-head">
+        <p className="eyebrow">REAL WORK. CINEMATICALLY PRESENTED.</p>
+        <h2 id="film-story-title">See the finish move.</h2>
+        <p>These are real vehicles, real transformations and real results from Cole&apos;s Mobile Detailing.</p>
+      </div>
+      <div className="film-grid">
+        {films.map((film, index) => <motion.article className={`film-card film-card-${index+1}`} key={film.src} initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .22 }} transition={{ duration: .8, delay: index*.08, ease: [0.16,1,0.3,1] }}>
+          <div className="film-frame">
+            <video muted loop playsInline preload="none" poster={film.poster} onMouseEnter={event => event.currentTarget.play()} onMouseLeave={event => { event.currentTarget.pause(); event.currentTarget.currentTime = 0; }} onFocus={event => event.currentTarget.play()} onBlur={event => event.currentTarget.pause()} aria-label={film.title}>
+              <source src={film.src} type="video/mp4" />
+            </video>
+            <button type="button" className="film-play" onClick={event => { const video = event.currentTarget.parentElement?.querySelector("video"); if (!video) return; video.paused ? video.play() : video.pause(); }} aria-label={`Play or pause ${film.title}`}><span /></button>
+            <div className="film-shade" />
+          </div>
+          <div className="film-copy"><span>{film.eyebrow}</span><h3>{film.title}</h3><p>{film.copy}</p></div>
+        </motion.article>)}
+      </div>
     </section>
 
     <section id="treatments" className="treatments">
@@ -149,7 +176,7 @@ export function LuxuryExperience() {
     </section>
 
     <section id="ceramic" className="coating-story">
-      <div className="coating-copy"><p className="eyebrow">CERAMIC PROTECTION</p><h2>Protection you can see.</h2><p>Hydrophobic performance. Richer color. Easier maintenance. A glass-like barrier engineered to preserve the finish beneath it.</p><a href="tel:+18126295544">Request a coating consultation ↗</a></div>
+      <div className="coating-copy"><p className="eyebrow">CERAMIC PROTECTION</p><h2>Protection you can see.</h2><p>Hydrophobic performance. Richer color. Easier maintenance. A glass-like barrier engineered to preserve the finish beneath it.</p><a href="tel:+18126295544">Request a coating consultation</a></div>
       <div className="droplet-field" aria-hidden="true">{Array.from({ length: 24 }).map((_, i) => <motion.i key={i} style={{ left: `${(i*37)%96}%`, top: `${(i*53)%85}%` }} animate={{ y: [0, 10, 0], scale: [1, 1.12, 1] }} transition={{ duration: 2.6 + (i%5)*.35, repeat: Infinity, delay: i*.07 }} />)}</div>
       <div className="coating-image"><Image src="/images/enhanced/boat shine.webp" alt="Water beading on a protected glossy surface" fill sizes="100vw" /></div>
       <div className="coating-rings" aria-hidden="true"><span /><span /><span /></div>
