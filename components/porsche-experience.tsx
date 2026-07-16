@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Html, useGLTF, useProgress } from "@react-three/drei";
+import { Html, useGLTF, useProgress } from "@react-three/drei";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -87,14 +87,14 @@ export function PorscheExperience() {
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
     setMobile(isMobile);
-    const observer = new IntersectionObserver(([entry]) => setNearViewport(entry.isIntersecting), { rootMargin: "500px 0px" });
+    const observer = new IntersectionObserver(([entry]) => setNearViewport(entry.isIntersecting), { rootMargin: "100px 0px" });
     if (section.current) observer.observe(section.current);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!nearViewport || enabled) return;
-    const id = window.setTimeout(() => setEnabled(true), mobile ? 900 : 350);
+    const id = window.setTimeout(() => setEnabled(true), mobile ? 500 : 180);
     return () => window.clearTimeout(id);
   }, [nearViewport, mobile, enabled]);
 
@@ -121,7 +121,7 @@ export function PorscheExperience() {
           <spotLight position={[-4, 5, 4]} intensity={48} angle={.44} penumbra={.95} color="#eafaff" />
           <spotLight position={[5, 1, -2]} intensity={32} angle={.58} penumbra={1} color="#54f0cf" />
           <directionalLight position={[0, 3, -4]} intensity={1.7} color="#ffffff" />
-          <Suspense fallback={<Loader />}><Porsche progress={progressRef} pointer={pointer} /><Environment preset="city" resolution={64} /></Suspense>
+          <Suspense fallback={<Loader />}><Porsche progress={progressRef} pointer={pointer} /></Suspense>
         </Canvas>
       </div> : <div className="load-3d" aria-live="polite"><span>Preparing 3D finish study</span><small>Optimized vehicle experience loading automatically</small></div>}
       <div className="porsche-vignette" /><div className="porsche-grid" />

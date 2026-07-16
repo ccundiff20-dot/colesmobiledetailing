@@ -20,10 +20,10 @@ const services = [
 
 
 const films = [
-  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.jpg", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful polishing and refinement." },
-  { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.jpg", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
-  { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.jpg", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
-  { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.jpg", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
+  { src: "/media-v27/videos/porsche-finish.mp4", poster: "/media-v27/posters/porsche-finish.webp", eyebrow: "LUXURY FINISH", title: "Paint that reads like glass.", copy: "A real Porsche finish study captured after careful polishing and refinement." },
+  { src: "/media-v27/videos/camaro-reflection.mp4", poster: "/media-v27/posters/camaro-reflection.webp", eyebrow: "CLASSIC DEPTH", title: "Black paint, sharpened.", copy: "A classic Camaro with deeper reflections and cleaner visual depth." },
+  { src: "/media-v27/videos/yellow-corvette-walkaround.mp4", poster: "/media-v27/posters/yellow-corvette-walkaround.webp", eyebrow: "CLASSIC PRESERVATION", title: "A shape worth protecting.", copy: "A full walkaround of a C3 Corvette after exterior refinement." },
+  { src: "/media-v27/videos/boat-finish.mp4", poster: "/media-v27/posters/boat-finish.webp", eyebrow: "MARINE CARE", title: "Gloss beyond the driveway.", copy: "Large-format mobile detailing for boats and marine finishes." }
 ];
 
 const featuredDetails = [
@@ -91,26 +91,69 @@ function CursorGlow() {
 
 
 function ViewportVideo({ src, poster, label, className = "" }: { src: string; poster: string; label: string; className?: string }) {
-  const ref = useRef<HTMLVideoElement>(null);
+  const shell = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const [active, setActive] = useState(false);
+  const id = useMemo(() => `film-${src.replace(/[^a-z0-9]/gi, "-")}`, [src]);
+
   useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
+    const node = shell.current;
+    if (!node) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && entry.intersectionRatio > .55) video.play().catch(() => undefined);
-      else video.pause();
-    }, { threshold: [0, .55, .85], rootMargin: "-8% 0px -8% 0px" });
-    observer.observe(video);
+      if (entry.isIntersecting && entry.intersectionRatio >= .62) {
+        window.dispatchEvent(new CustomEvent("cmd-video-active", { detail: id }));
+        setActive(true);
+      } else if (!entry.isIntersecting) {
+        setActive(false);
+      }
+    }, { threshold: [0, .35, .62, .85], rootMargin: "0px 0px -8% 0px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [id]);
+
+  useEffect(() => {
+    const stopOther = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail;
+      if (detail !== id) setActive(false);
+    };
+    window.addEventListener("cmd-video-active", stopOther);
+    return () => window.removeEventListener("cmd-video-active", stopOther);
+  }, [id]);
+
+  useEffect(() => {
+    if (!active || !video.current) return;
+    video.current.play().catch(() => undefined);
+  }, [active]);
+
+  return <div ref={shell} className={`viewport-video ${className}`}>
+    <Image src={poster} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" aria-hidden="true" />
+    {active ? <video ref={video} muted loop playsInline preload="none" poster={poster} aria-label={label}>
+      <source src={src} type="video/mp4" />
+    </video> : null}
+  </div>;
+}
+
+function LazyPorscheExperience() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [load, setLoad] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setLoad(true); observer.disconnect(); }
+    }, { rootMargin: "120px 0px" });
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
-  return <video ref={ref} className={className} muted loop playsInline preload="metadata" poster={poster} aria-label={label}><source src={src} type="video/mp4" /></video>;
+  return <div ref={ref} className="lazy-porsche-shell">{load ? <PorscheExperience /> : <section className="porsche-experience porsche-shell-loading" aria-label="Immersive vehicle experience"><div className="porsche-sticky"><div className="porsche-fallback" /><div className="porsche-vignette" /><div className="porsche-loading-copy"><span>IMMERSIVE FINISH STUDY</span><strong>Scroll to begin.</strong></div></div></section>}</div>;
 }
 
 function LancerTransformation() {
   return <section className="lancer-story" aria-labelledby="lancer-title">
     <div className="lancer-head"><p className="eyebrow">TWO-ANGLE REVEAL</p><h2 id="lancer-title">The same Mitsubishi Lancer, captured from both sides.</h2><p>These are two separate original clips—not a duplicated or reversed video. Together they show the completed finish from complementary angles.</p></div>
     <div className="lancer-films">
-      <article><span>DRIVER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.jpg" label="Mitsubishi Lancer driver-side finish reveal" /></article>
-      <article><span>PASSENGER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.jpg" label="Mitsubishi Lancer passenger-side finish reveal" /></article>
+      <article><span>DRIVER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-before.mp4" poster="/media-v27/posters/lancer-before.webp" label="Mitsubishi Lancer driver-side finish reveal" /></article>
+      <article><span>PASSENGER SIDE</span><ViewportVideo src="/media-v27/videos/lancer-after.mp4" poster="/media-v27/posters/lancer-after.webp" label="Mitsubishi Lancer passenger-side finish reveal" /></article>
     </div>
   </section>;
 }
@@ -128,7 +171,6 @@ function BeforeAfter() {
 export function LuxuryExperience() {
   useSmoothScroll();
   const [active, setActive] = useState(0);
-  const filmVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(true);
   const [booking, setBooking] = useState({ vehicle: "Sedan", service: "Full Detail", date: "", name: "", phone: "" });
@@ -148,28 +190,6 @@ export function LuxuryExperience() {
     { label: "About", href: "/about", note: "Owner-operated in Southern Indiana" },
     { label: "Book", href: "/book", note: "Request your appointment" }
   ], []);
-
-  useEffect(() => {
-    const videos = filmVideoRefs.current.filter((video): video is HTMLVideoElement => Boolean(video));
-    if (!videos.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
-          videos.forEach((other) => {
-            if (other !== video) other.pause();
-          });
-          video.play().catch(() => undefined);
-        } else {
-          video.pause();
-        }
-      });
-    }, { threshold: [0, 0.55, 0.85], rootMargin: "-8% 0px -8% 0px" });
-
-    videos.forEach((video) => observer.observe(video));
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("cmd-intro-seen");
@@ -219,7 +239,7 @@ export function LuxuryExperience() {
       <div className="hero-index"><span>01</span><div /><span>05</span></div>
     </section>
 
-    <PorscheExperience />
+    <LazyPorscheExperience />
 
     <section className="statement">
       <p className="eyebrow">THE STANDARD</p>
@@ -236,10 +256,7 @@ export function LuxuryExperience() {
       <div className="film-grid">
         {films.map((film, index) => <motion.article className={`film-card film-card-${index+1}`} key={film.src} initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .22 }} transition={{ duration: .8, delay: index*.08, ease: [0.16,1,0.3,1] }}>
           <div className="film-frame">
-            <video ref={element => { filmVideoRefs.current[index] = element; }} muted loop playsInline preload="metadata" poster={film.poster} onMouseEnter={event => event.currentTarget.play()} onMouseLeave={event => event.currentTarget.pause()} onFocus={event => event.currentTarget.play()} onBlur={event => event.currentTarget.pause()} aria-label={film.title}>
-              <source src={film.src} type="video/mp4" />
-            </video>
-            <button type="button" className="film-play" onClick={event => { const video = event.currentTarget.parentElement?.querySelector("video"); if (!video) return; video.paused ? video.play() : video.pause(); }} aria-label={`Play or pause ${film.title}`}><span /></button>
+            <ViewportVideo src={film.src} poster={film.poster} label={film.title} />
             <div className="film-shade" />
           </div>
           <div className="film-copy"><span>{film.eyebrow}</span><h3>{film.title}</h3><p>{film.copy}</p></div>
