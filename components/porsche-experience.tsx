@@ -78,6 +78,7 @@ export function PorscheExperience() {
   const pointer = useRef({ x: 0, y: 0 });
   const [enabled, setEnabled] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [nearViewport, setNearViewport] = useState(false);
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
   const smooth = useSpring(scrollYProgress, { stiffness: 85, damping: 24, mass: .5 });
   const chapter = useTransform(smooth, [0, .28, .62, 1], [0, 1, 2, 3]);
@@ -86,11 +87,16 @@ export function PorscheExperience() {
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
     setMobile(isMobile);
-    if (!isMobile) {
-      const id = window.setTimeout(() => setEnabled(true), 450);
-      return () => window.clearTimeout(id);
-    }
+    const observer = new IntersectionObserver(([entry]) => setNearViewport(entry.isIntersecting), { rootMargin: "500px 0px" });
+    if (section.current) observer.observe(section.current);
+    return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!nearViewport || enabled) return;
+    const id = window.setTimeout(() => setEnabled(true), mobile ? 900 : 350);
+    return () => window.clearTimeout(id);
+  }, [nearViewport, mobile, enabled]);
 
   useEffect(() => smooth.on("change", value => { progressRef.current = value; }), [smooth]);
 
@@ -108,16 +114,16 @@ export function PorscheExperience() {
     <div className="porsche-sticky">
       <div className="porsche-fallback" aria-hidden="true" />
       {enabled ? <div className="porsche-canvas">
-        <Canvas dpr={[1, 1.35]} camera={{ position: [3.8, 0.78, 5.05], fov: 22, near: 0.05, far: 40 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }} performance={{ min: 0.65 }}>
+        <Canvas dpr={mobile ? 0.72 : [0.85, 1]} frameloop={nearViewport ? "always" : "demand"} camera={{ position: [3.8, 0.78, 5.05], fov: 22, near: 0.05, far: 40 }} gl={{ antialias: false, alpha: true, powerPreference: "high-performance", stencil: false, depth: true }} performance={{ min: 0.55, max: 1 }}>
           <CameraRig />
           <fog attach="fog" args={["#050607", 4.8, 8.5]} />
           <ambientLight intensity={.35} />
-          <spotLight position={[-4, 5, 4]} intensity={62} angle={.44} penumbra={.95} color="#eafaff" />
-          <spotLight position={[5, 1, -2]} intensity={42} angle={.58} penumbra={1} color="#54f0cf" />
+          <spotLight position={[-4, 5, 4]} intensity={48} angle={.44} penumbra={.95} color="#eafaff" />
+          <spotLight position={[5, 1, -2]} intensity={32} angle={.58} penumbra={1} color="#54f0cf" />
           <directionalLight position={[0, 3, -4]} intensity={1.7} color="#ffffff" />
-          <Suspense fallback={<Loader />}><Porsche progress={progressRef} pointer={pointer} /><Environment preset="city" /></Suspense>
+          <Suspense fallback={<Loader />}><Porsche progress={progressRef} pointer={pointer} /><Environment preset="city" resolution={64} /></Suspense>
         </Canvas>
-      </div> : <button className="load-3d" onClick={() => setEnabled(true)}><span>Explore in 3D</span><small>{mobile ? "Tap to load interactive vehicle" : "Loading immersive vehicle"}</small></button>}
+      </div> : <div className="load-3d" aria-live="polite"><span>Preparing 3D finish study</span><small>Optimized vehicle experience loading automatically</small></div>}
       <div className="porsche-vignette" /><div className="porsche-grid" />
       <div className="porsche-topline"><span>COLE&apos;S / PAINT CORRECTION + CERAMIC</span><span>911 / IMMERSIVE FINISH STUDY</span></div>
       <div className="porsche-wordmark">911</div>
@@ -132,4 +138,4 @@ export function PorscheExperience() {
   </section>;
 }
 
-useGLTF.preload("/models/porsche/scene-optimized.glb");
+
