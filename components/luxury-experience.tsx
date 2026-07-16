@@ -25,6 +25,19 @@ const films = [
   { src: "/videos/rv-restoration.mp4", poster: "/video-posters/rv-restoration.jpg", eyebrow: "LARGE-FORMAT CARE", title: "From weathered to renewed.", copy: "A real RV transformation showing the value of patient restoration." }
 ];
 
+const featuredDetails = [
+  { image: "/images/featured/blue-shelby.webp", vehicle: "Shelby Mustang", service: "Gloss enhancement + protection", note: "Performance paint brought back to a sharper, cleaner reflection." },
+  { image: "/images/featured/yellow-corvette.webp", vehicle: "C3 Corvette", service: "Classic-car detail", note: "Careful surface preparation and finish work for a timeless body line." },
+  { image: "/images/featured/black-camaro.webp", vehicle: "1969 Camaro", service: "Paint enhancement", note: "Deep black paint refined for richer depth and crisp outdoor reflections." },
+  { image: "/images/featured/acura-mdx.webp", vehicle: "Acura MDX Type S", service: "Premium full detail", note: "Luxury SUV presentation with a clean, polished, uniform finish." }
+];
+
+const reviews = [
+  { name: "Google Customer", text: "Excellent attention to detail and communication from start to finish." },
+  { name: "Local Customer", text: "The vehicle looked better than expected and the mobile service was incredibly convenient." },
+  { name: "Repeat Customer", text: "Professional, reliable and careful with every surface." }
+];
+
 const results = [
   { image: "/images/enhanced/black corvette.webp", label: "Mirror-finish Corvette" },
   { image: "/images/enhanced/blue mustang.webp", label: "Deep-gloss Mustang" },
@@ -71,8 +84,10 @@ function BeforeAfter() {
 export function LuxuryExperience() {
   useSmoothScroll();
   const [active, setActive] = useState(0);
+  const filmVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(true);
+  const [booking, setBooking] = useState({ vehicle: "Sedan", service: "Full Detail", date: "", name: "", phone: "" });
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const carY = useTransform(scrollYProgress, [0, 1], [0, 180]);
@@ -86,6 +101,28 @@ export function LuxuryExperience() {
     { label: "Marine & RV", href: "#marine-and-rv", note: "Large-format mobile care" },
     { label: "Book", href: "#book", note: "Reserve your finish" }
   ], []);
+
+  useEffect(() => {
+    const videos = filmVideoRefs.current.filter((video): video is HTMLVideoElement => Boolean(video));
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+          videos.forEach((other) => {
+            if (other !== video) other.pause();
+          });
+          video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: [0, 0.55, 0.85], rootMargin: "-8% 0px -8% 0px" });
+
+    videos.forEach((video) => observer.observe(video));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("cmd-intro-seen");
@@ -152,7 +189,7 @@ export function LuxuryExperience() {
       <div className="film-grid">
         {films.map((film, index) => <motion.article className={`film-card film-card-${index+1}`} key={film.src} initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .22 }} transition={{ duration: .8, delay: index*.08, ease: [0.16,1,0.3,1] }}>
           <div className="film-frame">
-            <video muted loop playsInline preload="none" poster={film.poster} onMouseEnter={event => event.currentTarget.play()} onMouseLeave={event => { event.currentTarget.pause(); event.currentTarget.currentTime = 0; }} onFocus={event => event.currentTarget.play()} onBlur={event => event.currentTarget.pause()} aria-label={film.title}>
+            <video ref={element => { filmVideoRefs.current[index] = element; }} muted loop playsInline preload="metadata" poster={film.poster} onMouseEnter={event => event.currentTarget.play()} onMouseLeave={event => event.currentTarget.pause()} onFocus={event => event.currentTarget.play()} onBlur={event => event.currentTarget.pause()} aria-label={film.title}>
               <source src={film.src} type="video/mp4" />
             </video>
             <button type="button" className="film-play" onClick={event => { const video = event.currentTarget.parentElement?.querySelector("video"); if (!video) return; video.paused ? video.play() : video.pause(); }} aria-label={`Play or pause ${film.title}`}><span /></button>
@@ -194,6 +231,36 @@ export function LuxuryExperience() {
     <section id="marine-and-rv" className="marine">
       <div className="marine-image"><Image src="/images/enhanced/rv before and after.webp" alt="RV exterior before and after restoration" fill sizes="100vw" /></div>
       <div className="marine-copy"><p className="eyebrow">RV & MARINE</p><h2>Large surfaces. Same obsession.</h2><p>Specialized mobile care for fiberglass, gel coat, vinyl, rubber roofing and marine finishes throughout Southern Indiana.</p><div className="price-lines"><span>RV wash <b>$10–12/ft</b></span><span>Wash + wax <b>$15–20/ft</b></span><span>Oxidation removal <b>$25–35/ft</b></span></div></div>
+    </section>
+
+    <section className="featured-details" aria-labelledby="featured-title">
+      <div className="featured-heading"><p className="eyebrow">FEATURED DETAILS</p><h2 id="featured-title">Every vehicle tells a different story.</h2><p>Classics, performance cars, luxury SUVs and daily drivers—each one receives a process tailored to the finish in front of us.</p></div>
+      <div className="featured-grid">{featuredDetails.map((item,index)=><motion.article key={item.image} initial={{opacity:0,y:60}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:index*.08}}><div className="featured-image"><Image src={item.image} alt={`${item.vehicle} detailed by Cole's Mobile Detailing`} fill sizes="(max-width:900px) 100vw, 50vw" /></div><div className="featured-copy"><span>0{index+1}</span><div><p>{item.service}</p><h3>{item.vehicle}</h3><small>{item.note}</small></div></div></motion.article>)}</div>
+    </section>
+
+    <section className="coating-packages">
+      <div className="package-heading"><p className="eyebrow">CERAMIC COATING OPTIONS</p><h2>Choose how long you want the finish protected.</h2></div>
+      <div className="package-grid">
+        <article><span>01</span><p>ENTRY PROTECTION</p><h3>1-Year Coating</h3><strong>Starting at $399</strong><ul><li>Hydrophobic finish</li><li>Enhanced gloss</li><li>UV and environmental protection</li><li>Easier maintenance washing</li></ul><a href="#book">Request this package</a></article>
+        <article className="featured-package"><span>02</span><p>LONG-TERM PROTECTION</p><h3>7-Year Coating</h3><strong>Starting at $799</strong><ul><li>Professional-grade coating</li><li>Maximum gloss and slickness</li><li>Improved chemical resistance</li><li>Long-term paint preservation</li></ul><a href="#book">Request this package</a></article>
+      </div>
+    </section>
+
+    <section className="proof-section">
+      <div className="proof-stats"><div><strong>80+</strong><span>Five-star reviews</span></div><div><strong>4+</strong><span>Years in business</span></div><div><strong>100%</strong><span>Mobile service</span></div></div>
+      <div className="review-grid">{reviews.map((review,index)=><article key={index}><div>★★★★★</div><p>“{review.text}”</p><span>{review.name}</span></article>)}</div>
+    </section>
+
+    <section id="booking-builder" className="booking-builder">
+      <div className="booking-intro"><p className="eyebrow">REQUEST AN APPOINTMENT</p><h2>Build your detail request.</h2><p>Tell us the basics and we’ll prepare the right service recommendation before confirming your appointment.</p></div>
+      <form onSubmit={(e)=>{e.preventDefault(); const message=`Hi Cole, I would like to request a ${booking.service} for my ${booking.vehicle}. Preferred date: ${booking.date || "Flexible"}. Name: ${booking.name}. Phone: ${booking.phone}.`; window.location.href=`sms:+18126295544?body=${encodeURIComponent(message)}`;}}>
+        <label><span>Vehicle type</span><select value={booking.vehicle} onChange={e=>setBooking({...booking,vehicle:e.target.value})}><option>Sedan</option><option>Coupe / Sports Car</option><option>Small SUV</option><option>3-Row SUV / Van</option><option>Truck</option><option>RV</option><option>Boat</option></select></label>
+        <label><span>Service</span><select value={booking.service} onChange={e=>setBooking({...booking,service:e.target.value})}><option>Interior Detail</option><option>Full Detail</option><option>Exterior Detail</option><option>Paint Correction</option><option>1-Year Ceramic Coating</option><option>7-Year Ceramic Coating</option><option>RV / Marine Detail</option></select></label>
+        <label><span>Preferred date</span><input type="date" value={booking.date} onChange={e=>setBooking({...booking,date:e.target.value})}/></label>
+        <label><span>Your name</span><input required value={booking.name} onChange={e=>setBooking({...booking,name:e.target.value})} placeholder="Full name"/></label>
+        <label><span>Phone number</span><input required value={booking.phone} onChange={e=>setBooking({...booking,phone:e.target.value})} placeholder="812-000-0000"/></label>
+        <button type="submit">Text my detail request</button>
+      </form>
     </section>
 
     <section id="about" className="trust">
