@@ -44,6 +44,45 @@ function CursorGlow() {
   return <motion.div className="cursor-glow" style={{ x: sx, y: sy }} aria-hidden="true" />;
 }
 
+
+function CinematicVideo({ src, poster, label }: { src: string; poster: string; label: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "240px" });
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !ready) return;
+    const play = () => video.play().catch(() => undefined);
+    play();
+  }, [ready]);
+
+  return <video
+    ref={videoRef}
+    className="v4-cinematic-video"
+    poster={poster}
+    muted
+    loop
+    playsInline
+    preload="none"
+    aria-label={label}
+  >
+    {ready && <source src={src} type="video/mp4" />}
+  </video>;
+}
+
 export function LuxuryExperience() {
   useSmoothScroll();
   const [active, setActive] = useState(0);
@@ -84,22 +123,43 @@ export function LuxuryExperience() {
       <motion.div className="v4-hero-media" style={{ y: imageY, scale: imageScale }}><Image src="/media-v27/images/porsche-rear.webp" alt="Porsche with a high-gloss detailed finish" fill priority sizes="100vw" /></motion.div>
       <div className="v4-hero-overlay" /><div className="v4-hero-grid" /><div className="v4-scan" />
       <motion.div className="v4-hero-copy" style={{ y: copyY }}>
-        <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .2 }}>NEWBURGH · EVANSVILLE · SOUTHERN INDIANA</motion.p>
-        <div className="v4-display"><motion.span initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>DETAILING</motion.span><motion.span className="stroke" initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: .12, ease: [0.16, 1, 0.3, 1] }}>WITHOUT</motion.span><motion.span initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: .24, ease: [0.16, 1, 0.3, 1] }}>COMPROMISE.</motion.span></div>
-        <motion.div className="v4-hero-bottom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .9 }}><p>Premium mobile detailing, paint correction, and ceramic protection for drivers who notice the difference.</p><div><a href="sms:+18126295544">Book the finish</a><a href="/gallery">View our work</a></div></motion.div>
+        <div className="v4-hero-kicker"><motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }}>NEWBURGH · EVANSVILLE · SOUTHERN INDIANA</motion.p><span>EST. 2022</span></div>
+        <div className="v4-display" aria-label="Crafted, not cleaned">
+          <div className="v4-line"><motion.span initial={{ y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>CRAFTED.</motion.span></div>
+          <div className="v4-line second"><motion.span className="stroke" initial={{ y: "115%" }} animate={{ y: 0 }} transition={{ duration: 1, delay: .14, ease: [0.16, 1, 0.3, 1] }}>NOT CLEANED.</motion.span></div>
+        </div>
+        <motion.div className="v4-hero-bottom" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .82 }}>
+          <div className="v4-hero-summary"><span>01</span><p>Premium mobile detailing, paint correction, and ceramic protection—built around deeper gloss, sharper reflections, and lasting protection.</p></div>
+          <div className="v4-hero-actions"><a href="sms:+18126295544">Book your detail</a><a href="/gallery">Explore the work <span>↗</span></a></div>
+        </motion.div>
       </motion.div>
+      <div className="v4-hero-proof"><span>5.0</span><div><b>★★★★★</b><small>80+ GOOGLE REVIEWS</small></div></div>
       <div className="v4-scroll-cue"><span>SCROLL TO DISCOVER</span><i /></div>
     </section>
 
     <section className="v4-manifesto">
       <p className="eyebrow">THE STANDARD</p>
-      <h2>Every vehicle deserves the kind of attention normally reserved for something rare.</h2>
+      <h2>Not every vehicle is rare. The way it is cared for should be.</h2>
       <div><span>80+ five-star reviews</span><span>Owner-operated</span><span>Fully mobile</span></div>
+    </section>
+
+    <section className="v4-cinema" aria-label="Cinematic automotive presentation">
+      <div className="v4-cinema-media">
+        <CinematicVideo src="/media/cinematic/scenic-sports-car.mp4" poster="/media/cinematic/scenic-sports-car-poster.webp" label="White sports car driving beside a scenic lake" />
+      </div>
+      <div className="v4-cinema-shade" />
+      <div className="v4-cinema-copy">
+        <p className="eyebrow">THE PURSUIT OF FINISH</p>
+        <h2>Built for the moment<br/>you look back.</h2>
+        <p>Every surface refined. Every reflection intentional. That is the standard behind every appointment.</p>
+        <a href="/services">Explore the treatments <span>↗</span></a>
+      </div>
+      <div className="v4-cinema-credit">Cinematic footage · Erik Mclean / Pexels</div>
     </section>
 
     <section className="v4-feature" aria-labelledby="feature-title">
       <div className="v4-feature-media"><Image src="/media-v27/images/black-camaro.webp" alt="Black Camaro after paint refinement" fill sizes="(max-width: 900px) 100vw, 58vw" /></div>
-      <div className="v4-feature-copy"><p className="eyebrow">FEATURED TRANSFORMATION</p><span className="v4-project-number">01 / 03</span><h2 id="feature-title">Black paint.<br/>Brought back to life.</h2><p>A careful wash, decontamination, and machine polish restored depth to this classic Camaro. The result is not just a cleaner car—it is a sharper silhouette, deeper color, and reflections that finally read clearly again.</p><div className="v4-feature-meta"><span><b>Vehicle</b>Classic Camaro</span><span><b>Treatment</b>Paint enhancement</span><span><b>Result</b>Deeper gloss</span></div><a href="/gallery">Explore the full gallery</a></div>
+      <div className="v4-feature-copy"><p className="eyebrow">FEATURED TRANSFORMATION</p><span className="v4-project-number">01 / 03</span><h2 id="feature-title">Black paint.<br/>Reintroduced.</h2><p>A measured wash, decontamination, and machine polish rebuilt the visual depth of this classic Camaro. The finish now reads darker, sharper, and more deliberate from every angle.</p><div className="v4-feature-meta"><span><b>Vehicle</b>Classic Camaro</span><span><b>Treatment</b>Paint enhancement</span><span><b>Result</b>Deeper gloss</span></div><a href="/gallery">Explore the full gallery</a></div>
     </section>
 
     <section className="v4-services" id="services">
@@ -115,7 +175,7 @@ export function LuxuryExperience() {
       <div className="v4-gallery-grid">
         <figure className="wide"><Image src="/media-v27/images/porsche-rear.webp" alt="Glossy sports car finish" fill sizes="(max-width: 900px) 100vw, 65vw" /><figcaption><span>01</span>Performance finish study</figcaption></figure>
         <figure><Image src="/media-v27/images/tesla-interior.webp" alt="Detailed Tesla interior" fill sizes="(max-width: 900px) 100vw, 35vw" /><figcaption><span>02</span>Interior precision</figcaption></figure>
-        <figure><Image src="/media-v27/images/foam-supercar-side.webp" alt="Vehicle covered in detailing foam" fill sizes="(max-width: 900px) 100vw, 35vw" /><figcaption><span>03</span>Safe preparation</figcaption></figure>
+        <figure><Image src="/media-v27/images/porsche-wheel.webp" alt="Detailed performance wheel and bodywork" fill sizes="(max-width: 900px) 100vw, 35vw" /><figcaption><span>03</span>Exterior precision</figcaption></figure>
       </div>
       <a className="v4-gallery-link" href="/gallery">View all projects <span>↗</span></a>
     </section>

@@ -16,3 +16,14 @@ The photos and videos under `public/media-v25` were supplied by Cole's Mobile De
 
 ## v2.7 media
 All photos and videos under `public/media-v27` were supplied by Cole's Mobile Detailing and compressed for web delivery.
+
+## Scenic sports-car video
+
+The cinematic white sports-car clip at `public/media/cinematic/scenic-sports-car.mp4` is adapted from a Pexels video by **Erik Mclean**.
+
+- Source: https://www.pexels.com/video/sleek-white-sports-car-on-scenic-lakeside-drive-33595932/
+- Creator: Erik Mclean
+- Platform: Pexels
+- Usage: Compressed, resized, and muted for web presentation.
+
+The original Pexels license applies. Attribution is retained in the gallery caption and this asset record.
