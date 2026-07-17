@@ -356,3 +356,60 @@
   .v4-cinema-facts{display:none}
   .v4-cinema-badge{left:12px;bottom:12px;padding:8px 9px}
 }
+
+
+/* V4.7 — unmistakable Corvette deploy + true desktop/mobile framing */
+.v4-cinema-night .v4-cinema-media{
+  display:grid;
+  place-items:center;
+  isolation:isolate;
+  background:#030405;
+}
+.v4-cinema-backdrop{
+  position:absolute;
+  inset:-5%;
+  width:110%;
+  height:110%;
+  object-fit:cover;
+  object-position:center 45%;
+  filter:blur(30px) brightness(.34) saturate(.82);
+  transform:scale(1.08);
+  opacity:.88;
+  z-index:0;
+}
+.v4-cinema-portrait-shell{
+  position:relative;
+  z-index:1;
+  width:min(31vw,520px);
+  height:min(82svh,860px);
+  overflow:hidden;
+  border:1px solid rgba(220,239,247,.28);
+  box-shadow:0 42px 120px rgba(0,0,0,.72),0 0 60px rgba(180,220,238,.08);
+  background:#050607;
+}
+.v4-cinema-portrait-shell .v4-cinematic-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 42%;
+  filter:saturate(.98) contrast(1.08) brightness(.9);
+}
+.v4-cinema-night .v4-cinema-media::before{
+  content:"CORVETTE / NIGHTFALL";
+  position:absolute;
+  right:22px;
+  top:22px;
+  z-index:3;
+  font-size:.48rem;
+  letter-spacing:.2em;
+  color:rgba(255,255,255,.68);
+}
+@media (max-width:900px){
+  .v4-cinema-night .v4-cinema-media{display:block}
+  .v4-cinema-backdrop{display:none}
+  .v4-cinema-portrait-shell{width:100%;height:100%;border:0;box-shadow:none}
+  .v4-cinema-portrait-shell .v4-cinematic-video{object-position:center 38%}
+  .v4-cinema-night .v4-cinema-media::before{right:14px;top:14px;font-size:.4rem}
+}

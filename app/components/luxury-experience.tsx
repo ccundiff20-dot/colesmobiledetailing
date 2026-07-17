@@ -140,8 +140,8 @@ export function LuxuryExperience() {
     <section className="v4-cinema v4-cinema-portrait v4-cinema-night" aria-label="Cinematic automotive presentation">
       <div className="v4-cinema-copy">
         <p className="eyebrow">THE NIGHT SHIFT</p>
-        <h2>Gloss that still<br/>hits after dark.</h2>
-        <p>Deep reflections, clean edges, and a finish that stays dramatic in any light. That is the standard behind every appointment.</p>
+        <h2>Nightfall gloss.<br/>Built to be noticed.</h2>
+        <p>A cinematic finish is not only about shine. It is about depth, clean reflections, protected surfaces, and a vehicle that looks intentional from every angle.</p>
         <div className="v4-cinema-facts" aria-label="Service highlights">
           <span><b>01</b> Mobile convenience</span>
           <span><b>02</b> Owner-operated care</span>
@@ -150,9 +150,14 @@ export function LuxuryExperience() {
         <a href="/book">Reserve your appointment <span>↗</span></a>
       </div>
       <div className="v4-cinema-media">
-        <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
-        <div className="v4-cinema-frame" aria-hidden="true"><span>NIGHT / 01</span><i /></div>
-        <div className="v4-cinema-badge" aria-hidden="true"><span>30 FPS</span><strong>CINEMATIC</strong></div>
+        <video className="v4-cinema-backdrop" aria-hidden="true" muted loop autoPlay playsInline preload="metadata" poster="/media/cinematic/corvette-night-v1-poster.webp">
+          <source src="/media/cinematic/corvette-night-v1.mp4?v=47" type="video/mp4" />
+        </video>
+        <div className="v4-cinema-portrait-shell">
+          <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4?v=47" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
+          <div className="v4-cinema-frame" aria-hidden="true"><span>NIGHT / 01</span><i /></div>
+          <div className="v4-cinema-badge" aria-hidden="true"><span>30 FPS</span><strong>CINEMATIC</strong></div>
+        </div>
       </div>
       <div className="v4-cinema-shade" />
     </section>
