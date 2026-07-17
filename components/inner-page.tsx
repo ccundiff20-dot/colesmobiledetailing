@@ -6,7 +6,7 @@ export function InnerNav() {
 }
 
 export function InnerFooter() {
-  return <footer className="inner-footer"><div><strong>COLE&apos;S MOBILE DETAILING</strong><p>Premium mobile detailing across Southern Indiana.</p></div><div><Link href="/services">Services</Link><Link href="/rv-marine">RV & Marine</Link><Link href="/fleet">Fleet</Link><a href="tel:+18126295544">812-629-5544</a><a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a></div></footer>;
+  return <footer className="inner-footer"><div><strong>COLE&apos;S MOBILE DETAILING</strong><p>Owner-operated mobile detailing across Southern Indiana.</p><small>© 2026 Cole&apos;s Mobile Detailing</small></div><div><Link href="/services">Services</Link><Link href="/rv-marine">RV & Marine</Link><Link href="/fleet">Fleet</Link><a href="tel:+18126295544">812-629-5544</a><a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a><a href="https://digitalforgeweb.com" target="_blank" rel="noreferrer">Website by Digital Forge</a></div></footer>;
 }
 
 export function PageHero({ eyebrow, title, copy, image }: { eyebrow:string; title:string; copy:string; image:string }) {

@@ -536,3 +536,28 @@
   .v4-ba-copy>div span{padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.12)}
   .v4-ba-line span{width:46px;height:46px}
 }
+
+/* V5.2 cleanup: non-emoji controls + cleaner agency footer */
+.v4-ba-grip{width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.v4-ba-grip i{display:block;width:1px;height:10px;background:#111}
+.v4-menu-link-line{width:34px;height:1px;background:rgba(255,255,255,.48);margin-left:auto;transition:width .3s ease,background .3s ease}
+.v4-menu nav a:hover .v4-menu-link-line{width:54px;background:var(--acid)}
+.v4-footer{grid-template-columns:1.25fr .65fr .85fr;position:relative;padding:5.5vw 5vw 2.2vw;gap:5vw}
+.v4-footer-brand-block,.v4-footer-links,.v4-footer-contact{display:flex;flex-direction:column;align-items:flex-start!important}
+.v4-footer-brand-block>p{max-width:380px;color:#858c8f;font-size:.72rem;line-height:1.7;margin:24px 0 0}
+.v4-footer-links>p,.v4-footer-contact>p{margin:0 0 18px;color:#666e71;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase}
+.v4-footer-links nav{display:grid;grid-template-columns:1fr;gap:11px}
+.v4-footer-links a,.v4-footer-contact a{font-size:.76rem;transition:color .25s ease}
+.v4-footer-links a:hover,.v4-footer-contact a:hover{color:var(--acid)}
+.v4-footer-contact span{font-size:.6rem;color:#747b7e;margin-top:8px;text-transform:uppercase;letter-spacing:.1em}
+.v4-footer-bottom{grid-column:1/-1;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between;border-top:1px solid rgba(255,255,255,.11);padding-top:20px;margin-top:12px}
+.v4-footer-bottom p{margin:0;color:#626a6d;font-size:.56rem}
+.v4-footer-bottom>a{display:flex;align-items:baseline;gap:7px}
+.v4-footer-bottom>a span{color:#626a6d;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em}
+.v4-footer-bottom>a strong{font-size:.72rem;letter-spacing:.04em}
+@media(max-width:900px){
+  .v4-footer{grid-template-columns:1fr;text-align:left;padding:16vw 6vw 30vw;gap:11vw}
+  .v4-footer-brand-block,.v4-footer-links,.v4-footer-contact{align-items:flex-start!important}
+  .v4-footer-links nav{align-items:flex-start}
+  .v4-footer-bottom{grid-column:auto;align-items:flex-start!important;gap:14px;flex-direction:column!important;margin-top:0}
+}

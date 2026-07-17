@@ -92,7 +92,7 @@ function BeforeAfterSlider() {
       <div className="v4-ba-after" style={{ clipPath: `inset(0 0 0 ${position}%)` }}>
         <Image src="/images/transformation/interior-after.webp" alt="Vehicle interior after detailing" fill sizes="(max-width: 900px) 100vw, 58vw" />
       </div>
-      <div className="v4-ba-line" style={{ left: `${position}%` }} aria-hidden="true"><span>↔</span></div>
+      <div className="v4-ba-line" style={{ left: `${position}%` }} aria-hidden="true"><span className="v4-ba-grip"><i/><i/></span></div>
       <span className="v4-ba-label before">Before</span><span className="v4-ba-label after">After</span>
       <input aria-label="Compare before and after detailing results" type="range" min="8" max="92" value={position} onChange={(e) => setPosition(Number(e.target.value))} />
     </div>
@@ -101,7 +101,7 @@ function BeforeAfterSlider() {
       <h2>Drag to reveal the reset.</h2>
       <p>This is actual work—not stock media. Slide across the image to compare the interior before and after a full deep-cleaning service.</p>
       <div><span><b>Service</b>Interior detail</span><span><b>Focus</b>Seats, carpet, touchpoints</span><span><b>Result</b>Clean, refreshed cabin</span></div>
-      <a href="/gallery">See more real transformations <span>↗</span></a>
+      <a href="/gallery">See more real transformations</a>
     </div>
   </div>;
 }
@@ -141,7 +141,7 @@ export function LuxuryExperience() {
       <div className="v4-menu-grid" aria-hidden="true" />
       <div className="v4-menu-top"><span>COLE'S / MOBILE DETAILING</span><span>NEWBURGH · EVANSVILLE</span></div>
       <button onClick={() => setMenu(false)}><span>Close</span><i>×</i></button>
-      <nav>{nav.map(([label, href], i) => <motion.a key={label} href={href} onClick={() => setMenu(false)} initial={{ opacity: 0, x: -34 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .07 * i, ease: [0.16, 1, 0.3, 1] }}><small>0{i + 1}</small><span>{label}</span><em>↗</em></motion.a>)}</nav>
+      <nav>{nav.map(([label, href], i) => <motion.a key={label} href={href} onClick={() => setMenu(false)} initial={{ opacity: 0, x: -34 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .07 * i, ease: [0.16, 1, 0.3, 1] }}><small>0{i + 1}</small><span>{label}</span><em aria-hidden="true" className="v4-menu-link-line" /></motion.a>)}</nav>
       <motion.div className="v4-menu-footer" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .42 }}>
         <div><b>5.0 ★</b><span>80+ Google reviews</span></div>
         <div><a href="sms:+18126295544">Text 812-629-5544</a><a href="mailto:ccundiff20@gmail.com">Email Cole</a></div>
@@ -159,7 +159,7 @@ export function LuxuryExperience() {
         </div>
         <motion.div className="v4-hero-bottom" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .82 }}>
           <div className="v4-hero-summary"><span>01</span><p>Premium mobile detailing, paint correction, and ceramic protection—built around deeper gloss, sharper reflections, and lasting protection.</p></div>
-          <div className="v4-hero-actions"><a href="sms:+18126295544">Book your detail</a><a href="/gallery">Explore the work <span>↗</span></a></div>
+          <div className="v4-hero-actions"><a href="sms:+18126295544">Book your detail</a><a href="/gallery">Explore the work</a></div>
         </motion.div>
       </motion.div>
       <div className="v4-hero-proof"><span>5.0</span><div><b>★★★★★</b><small>80+ GOOGLE REVIEWS</small></div></div>
@@ -176,7 +176,7 @@ export function LuxuryExperience() {
           <span><b>02</b> Owner-operated care</span>
           <span><b>03</b> Protection-first process</span>
         </div>
-        <a href="/book">Reserve your appointment <span>↗</span></a>
+        <a href="/book">Reserve your appointment</a>
       </div>
       <div className="v4-cinema-media">
         <video className="v4-cinema-backdrop" aria-hidden="true" muted loop autoPlay playsInline preload="metadata" poster="/media/cinematic/corvette-night-v1-poster.webp">
@@ -201,7 +201,7 @@ export function LuxuryExperience() {
         <article><span>02</span><h3>Owner-operated</h3><p>Your vehicle is handled directly by Cole—not passed through a rushed production line.</p></article>
         <article><span>03</span><h3>Results that last</h3><p>Professional products and a protection-first process designed for deeper gloss, easier upkeep, and longer-lasting results.</p></article>
       </div>
-      <a href="/book">See availability <span>↗</span></a>
+      <a href="/book">See availability</a>
     </section>
 
     <section className="v4-feature" aria-labelledby="feature-title">
@@ -226,7 +226,7 @@ export function LuxuryExperience() {
         <figure><Image src="/media-v27/images/tesla-interior.webp" alt="Detailed Tesla interior" fill sizes="(max-width: 900px) 100vw, 35vw" /><figcaption><span>02</span>Interior precision</figcaption></figure>
         <figure><Image src="/media-v27/images/porsche-wheel.webp" alt="Detailed performance wheel and bodywork" fill sizes="(max-width: 900px) 100vw, 35vw" /><figcaption><span>03</span>Exterior precision</figcaption></figure>
       </div>
-      <a className="v4-gallery-link" href="/gallery">View all projects <span>↗</span></a>
+      <a className="v4-gallery-link" href="/gallery">View all projects</a>
     </section>
 
     <section className="v4-reviews">
@@ -241,6 +241,25 @@ export function LuxuryExperience() {
 
     <div className="v4-mobile-book" aria-label="Quick booking actions"><a href="sms:+18126295544">Text to book</a><a href="tel:+18126295544">Call now</a></div>
 
-    <footer className="v4-footer"><a className="brand footer-brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge.webp" alt="Cole's Mobile Detailing badge" width={76} height={76} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a><nav>{nav.map(([label, href]) => <a key={label} href={href}>{label}</a>)}</nav><div><a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a><a href="tel:+18126295544">812-629-5544</a><p>© 2026 Cole&apos;s Mobile Detailing</p></div></footer>
+    <footer className="v4-footer">
+      <div className="v4-footer-brand-block">
+        <a className="brand footer-brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge.webp" alt="Cole's Mobile Detailing badge" width={68} height={68} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a>
+        <p>Owner-operated mobile detailing serving Newburgh, Evansville, and surrounding Southern Indiana.</p>
+      </div>
+      <div className="v4-footer-links">
+        <p>Explore</p>
+        <nav>{nav.map(([label, href]) => <a key={label} href={href}>{label}</a>)}</nav>
+      </div>
+      <div className="v4-footer-contact">
+        <p>Contact</p>
+        <a href="tel:+18126295544">812-629-5544</a>
+        <a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a>
+        <span>By appointment only</span>
+      </div>
+      <div className="v4-footer-bottom">
+        <p>© 2026 Cole&apos;s Mobile Detailing</p>
+        <a href="https://digitalforgeweb.com" target="_blank" rel="noreferrer"><span>Website by</span><strong>Digital Forge</strong></a>
+      </div>
+    </footer>
   </main>;
 }
