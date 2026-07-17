@@ -4,12 +4,6 @@ import Image from "next/image";
 import Lenis from "lenis";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, useScroll } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-
-const PorscheExperience = dynamic(() => import("./porsche-experience").then(mod => mod.PorscheExperience), {
-  ssr: false,
-  loading: () => <section className="porsche-experience porsche-shell-loading" aria-label="Loading immersive vehicle experience"><div className="porsche-sticky"><div className="porsche-fallback" /><div className="porsche-vignette" /><div className="porsche-loading-copy"><span>IMMERSIVE FINISH STUDY</span><strong>Preparing the reveal.</strong></div></div></section>
-});
 
 const services = [
   { id: "01", name: "Signature Interior", kicker: "RESET THE CABIN", price: "From $199", image: "/images/enhanced/prosche.webp", copy: "Deep vacuuming, surface restoration, glass, leather and fabric care—finished with obsessive attention to touchpoints." },
@@ -133,20 +127,7 @@ function ViewportVideo({ src, poster, label, className = "" }: { src: string; po
   </div>;
 }
 
-function LazyPorscheExperience() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [load, setLoad] = useState(false);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setLoad(true); observer.disconnect(); }
-    }, { rootMargin: "120px 0px" });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-  return <div ref={ref} className="lazy-porsche-shell">{load ? <PorscheExperience /> : <section className="porsche-experience porsche-shell-loading" aria-label="Immersive vehicle experience"><div className="porsche-sticky"><div className="porsche-fallback" /><div className="porsche-vignette" /><div className="porsche-loading-copy"><span>IMMERSIVE FINISH STUDY</span><strong>Scroll to begin.</strong></div></div></section>}</div>;
-}
+
 
 function LancerTransformation() {
   return <section className="lancer-story" aria-labelledby="lancer-title">
@@ -239,7 +220,6 @@ export function LuxuryExperience() {
       <div className="hero-index"><span>01</span><div /><span>05</span></div>
     </section>
 
-    <LazyPorscheExperience />
 
     <section className="statement">
       <p className="eyebrow">THE STANDARD</p>
