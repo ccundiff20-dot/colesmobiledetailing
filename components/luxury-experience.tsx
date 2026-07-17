@@ -137,24 +137,42 @@ export function LuxuryExperience() {
       <div className="v4-scroll-cue"><span>SCROLL TO DISCOVER</span><i /></div>
     </section>
 
-    <section className="v4-manifesto">
-      <p className="eyebrow">THE STANDARD</p>
-      <h2>Not every vehicle is rare. The way it is cared for should be.</h2>
-      <div><span>80+ five-star reviews</span><span>Owner-operated</span><span>Fully mobile</span></div>
-    </section>
-
-    <section className="v4-cinema" aria-label="Cinematic automotive presentation">
+    <section className="v4-cinema v4-cinema-portrait v4-cinema-night" aria-label="Cinematic automotive presentation">
+      <div className="v4-cinema-copy">
+        <p className="eyebrow">THE NIGHT SHIFT</p>
+        <h2>Nightfall gloss.<br/>Built to be noticed.</h2>
+        <p>A cinematic finish is not only about shine. It is about depth, clean reflections, protected surfaces, and a vehicle that looks intentional from every angle.</p>
+        <div className="v4-cinema-facts" aria-label="Service highlights">
+          <span><b>01</b> Mobile convenience</span>
+          <span><b>02</b> Owner-operated care</span>
+          <span><b>03</b> Protection-first process</span>
+        </div>
+        <a href="/book">Reserve your appointment <span>↗</span></a>
+      </div>
       <div className="v4-cinema-media">
-        <CinematicVideo src="/media/cinematic/scenic-sports-car.mp4" poster="/media/cinematic/scenic-sports-car-poster.webp" label="White sports car driving beside a scenic lake" />
+        <video className="v4-cinema-backdrop" aria-hidden="true" muted loop autoPlay playsInline preload="metadata" poster="/media/cinematic/corvette-night-v1-poster.webp">
+          <source src="/media/cinematic/corvette-night-v1.mp4?v=47" type="video/mp4" />
+        </video>
+        <div className="v4-cinema-portrait-shell">
+          <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4?v=47" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
+          <div className="v4-cinema-frame" aria-hidden="true"><span>NIGHT / 01</span><i /></div>
+          <div className="v4-cinema-badge" aria-hidden="true"><span>30 FPS</span><strong>CINEMATIC</strong></div>
+        </div>
       </div>
       <div className="v4-cinema-shade" />
-      <div className="v4-cinema-copy">
-        <p className="eyebrow">THE PURSUIT OF FINISH</p>
-        <h2>Built for the moment<br/>you look back.</h2>
-        <p>Every surface refined. Every reflection intentional. That is the standard behind every appointment.</p>
-        <a href="/services">Explore the treatments <span>↗</span></a>
+    </section>
+
+    <section className="v4-benefits" aria-label="Benefits of mobile detailing">
+      <div className="v4-benefits-head">
+        <p className="eyebrow">WHY MOBILE DETAILING</p>
+        <h2>Premium results without losing your day.</h2>
       </div>
-      <div className="v4-cinema-credit">Cinematic footage · Erik Mclean / Pexels</div>
+      <div className="v4-benefit-grid">
+        <article><span>01</span><h3>We come to you</h3><p>Home or workplace service across Newburgh, Evansville, and surrounding Southern Indiana.</p></article>
+        <article><span>02</span><h3>Owner-operated</h3><p>Your vehicle is handled directly by Cole—not passed through a rushed production line.</p></article>
+        <article><span>03</span><h3>Results that last</h3><p>Professional products and a protection-first process designed for deeper gloss, easier upkeep, and longer-lasting results.</p></article>
+      </div>
+      <a href="/book">See availability <span>↗</span></a>
     </section>
 
     <section className="v4-feature" aria-labelledby="feature-title">
