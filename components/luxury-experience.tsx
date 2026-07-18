@@ -47,39 +47,38 @@ function CursorGlow() {
 
 function CinematicVideo({ src, poster, label }: { src: string; poster: string; label: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setReady(true);
-        observer.disconnect();
-      }
-    }, { rootMargin: "0px 0px 40px 0px", threshold: 0.05 });
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !ready) return;
-    const play = () => video.play().catch(() => undefined);
-    play();
-  }, [ready]);
+    // Autoplay can occasionally be delayed by the browser even when muted.
+    // Retry once the media is ready and again when the tab becomes visible.
+    const tryPlay = () => video.play().catch(() => undefined);
+    const onVisibility = () => { if (!document.hidden) tryPlay(); };
+
+    tryPlay();
+    video.addEventListener("canplay", tryPlay, { once: true });
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
 
   return <video
     ref={videoRef}
     className="v4-cinematic-video"
     poster={poster}
+    autoPlay
     muted
     loop
     playsInline
-    preload="none"
+    preload="metadata"
     aria-label={label}
   >
-    {ready && <source src={src} type="video/mp4" />}
+    <source src={src} type="video/mp4" />
     <track kind="captions" src="/captions/cinematic-en.vtt" srcLang="en" label="English" default />
   </video>;
 }
