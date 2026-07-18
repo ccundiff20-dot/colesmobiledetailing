@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { InnerFooter, InnerNav, PageHero } from "@/components/inner-page";
-export const metadata: Metadata = { title: "Detailing Services", description: "Interior, full, exterior, paint correction, RV and marine detailing pricing from Cole's Mobile Detailing." };
+export const metadata: Metadata = {
+  title: 'Detailing Services & Pricing',
+  description: "Interior, full, exterior, paint correction, RV, marine, and fleet detailing from Cole's Mobile Detailing.",
+  alternates: { canonical: '/services' },
+  openGraph: { title: 'Detailing Services & Pricing', description: "Interior, full, exterior, paint correction, RV, marine, and fleet detailing from Cole's Mobile Detailing.", url: '/services' },
+};
 const groups=[
  {n:"01",title:"Interior Detailing",copy:"A complete reset for the surfaces you touch every day.",prices:[["Sedan","$199"],["Small SUV","$249"],["Van / 3-row SUV","$279"]],items:["Thorough vacuuming","Plastics and vinyl cleaned and dressed","Interior glass cleaned","Seats cleaned and conditioned"]},
  {n:"02",title:"Full Detail",copy:"Interior restoration paired with exterior decontamination and protection.",prices:[["Sedan","$299"],["Small SUV","$349"],["Van / 3-row SUV","$399"]],items:["Complete interior detail","Hand wash","Clay bar and iron decontamination","Wheels and tires","4-month ceramic sealant"]},

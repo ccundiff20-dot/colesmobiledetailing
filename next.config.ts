@@ -3,6 +3,18 @@ const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
   images: { formats: ["image/avif", "image/webp"] },
   poweredByHeader: false,
+
+  async redirects() {
+    return [
+      { source: "/book-here", destination: "/book", permanent: true },
+      { source: "/contact", destination: "/book", permanent: true },
+      { source: "/pricing", destination: "/services", permanent: true },
+      { source: "/results", destination: "/gallery", permanent: true },
+      { source: "/rv-%26-marine", destination: "/rv-marine", permanent: true },
+      { source: "/fleet-detailing", destination: "/fleet", permanent: true },
+      { source: "/gift-card", destination: "/book", permanent: true },
+    ];
+  },
   async headers() {
     return [{
       source: "/(.*)",

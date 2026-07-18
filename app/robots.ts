@@ -1,2 +1,13 @@
 import type { MetadataRoute } from "next";
-export default function robots(): MetadataRoute.Robots { return { rules: { userAgent: "*", allow: "/" }, sitemap: "https://colesmobiledetail.com/sitemap.xml" }; }
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/"],
+    },
+    sitemap: "https://colesmobiledetail.com/sitemap.xml",
+    host: "https://colesmobiledetail.com",
+  };
+}
