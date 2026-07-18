@@ -587,3 +587,15 @@
 @keyframes cmdLoadingSpin { to { transform: rotate(360deg); } }
 @keyframes cmdLoadingBar { from { transform: translateX(-120%); } to { transform: translateX(340%); } }
 @media (prefers-reduced-motion: reduce) { .site-loading__ring, .site-loading__bar span { animation: none; } }
+
+
+/* V5.8: desktop cinematic video, lightweight static poster on mobile */
+.v4-cinematic-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 46%;filter:saturate(.94) contrast(1.07) brightness(.88)}
+.v4-cinematic-video{z-index:1}
+.v4-cinema-frame{z-index:2}
+@media(max-width:900px){
+  .v4-cinematic-poster{object-position:center 33%;transform:scale(1.02)}
+  .v4-cinema-night .v4-cinema-shade{background:linear-gradient(0deg,rgba(3,4,5,.24),rgba(3,4,5,.04) 58%,rgba(3,4,5,.02))}
+}
+.v4-cinema-night .v4-cinema-media::before,
+.v4-cinema-night .v4-cinema-media::after{display:none!important;content:none!important}
