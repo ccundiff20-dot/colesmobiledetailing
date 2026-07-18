@@ -370,8 +370,7 @@
   inset:-5%;
   width:110%;
   height:110%;
-  object-fit:cover;
-  object-position:center 45%;
+  background:url('/media/cinematic/corvette-night-v1-poster.webp') center 45% / cover no-repeat;
   filter:blur(30px) brightness(.34) saturate(.82);
   transform:scale(1.08);
   opacity:.88;

@@ -57,7 +57,7 @@ function CinematicVideo({ src, poster, label }: { src: string; poster: string; l
         setReady(true);
         observer.disconnect();
       }
-    }, { rootMargin: "240px" });
+    }, { rootMargin: "0px 0px 40px 0px", threshold: 0.05 });
     observer.observe(video);
     return () => observer.disconnect();
   }, []);
@@ -80,6 +80,7 @@ function CinematicVideo({ src, poster, label }: { src: string; poster: string; l
     aria-label={label}
   >
     {ready && <source src={src} type="video/mp4" />}
+    <track kind="captions" src="/captions/cinematic-en.vtt" srcLang="en" label="English" default />
   </video>;
 }
 
@@ -149,7 +150,7 @@ export function LuxuryExperience() {
     </motion.div>}</AnimatePresence>
 
     <section id="top" ref={heroRef} className="v4-hero">
-      <motion.div className="v4-hero-media" style={{ y: imageY, scale: imageScale }}><Image src="/media-v27/images/porsche-rear.webp" alt="Porsche with a high-gloss detailed finish" fill priority sizes="100vw" /></motion.div>
+      <motion.div className="v4-hero-media" style={{ y: imageY, scale: imageScale }}><Image src="/media-v27/images/porsche-rear.webp" alt="Porsche with a high-gloss detailed finish" fill priority quality={62} sizes="100vw" /></motion.div>
       <div className="v4-hero-overlay" /><div className="v4-hero-grid" /><div className="v4-scan" />
       <motion.div className="v4-hero-copy" style={{ y: copyY }}>
         <div className="v4-hero-kicker"><motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }}>NEWBURGH · EVANSVILLE · SOUTHERN INDIANA</motion.p><span>EST. 2022</span></div>
@@ -179,11 +180,9 @@ export function LuxuryExperience() {
         <a href="/book">Reserve your appointment</a>
       </div>
       <div className="v4-cinema-media">
-        <video className="v4-cinema-backdrop" aria-hidden="true" muted loop autoPlay playsInline preload="metadata" poster="/media/cinematic/corvette-night-v1-poster.webp">
-          <source src="/media/cinematic/corvette-night-v1.mp4?v=47" type="video/mp4" />
-        </video>
+        <div className="v4-cinema-backdrop" aria-hidden="true" />
         <div className="v4-cinema-portrait-shell">
-          <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4?v=47" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
+          <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4?v=56" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
           <div className="v4-cinema-frame" aria-hidden="true"><span>NIGHT / 01</span><i /></div>
           <div className="v4-cinema-badge" aria-hidden="true"><span>30 FPS</span><strong>CINEMATIC</strong></div>
         </div>
