@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LeadAttributionCapture } from "@/components/lead-attribution";
+import { ColeAssistant } from "@/components/cole-assistant";
 
 const siteUrl = "https://colesmobiledetail.com";
 
@@ -121,7 +123,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <LeadAttributionCapture />
         {children}
+        <ColeAssistant />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       </body>

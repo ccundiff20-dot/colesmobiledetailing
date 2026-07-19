@@ -47,27 +47,13 @@ function CursorGlow() {
 
 function CinematicVideo({ src, poster, label }: { src: string; poster: string; label: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playDesktopVideo, setPlayDesktopVideo] = useState(false);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 901px)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setPlayDesktopVideo(desktop.matches && !reducedMotion.matches);
-
-    update();
-    desktop.addEventListener("change", update);
-    reducedMotion.addEventListener("change", update);
-    return () => {
-      desktop.removeEventListener("change", update);
-      reducedMotion.removeEventListener("change", update);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!playDesktopVideo) return;
     const video = videoRef.current;
     if (!video) return;
 
+    // Autoplay can occasionally be delayed by the browser even when muted.
+    // Retry once the media is ready and again when the tab becomes visible.
     const tryPlay = () => video.play().catch(() => undefined);
     const onVisibility = () => { if (!document.hidden) tryPlay(); };
 
@@ -79,31 +65,22 @@ function CinematicVideo({ src, poster, label }: { src: string; poster: string; l
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [playDesktopVideo]);
+  }, []);
 
-  return <>
-    <Image
-      className="v4-cinematic-poster"
-      src={poster}
-      alt={label}
-      fill
-      sizes="(max-width: 900px) 100vw, 42vw"
-    />
-    {playDesktopVideo && <video
-      ref={videoRef}
-      className="v4-cinematic-video"
-      poster={poster}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      aria-label={label}
-    >
-      <source src={src} type="video/mp4" />
-      <track kind="captions" src="/captions/cinematic-en.vtt" srcLang="en" label="English" default />
-    </video>}
-  </>;
+  return <video
+    ref={videoRef}
+    className="v4-cinematic-video"
+    poster={poster}
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="metadata"
+    aria-label={label}
+  >
+    <source src={src} type="video/mp4" />
+    <track kind="captions" src="/captions/cinematic-en.vtt" srcLang="en" label="English" default />
+  </video>;
 }
 
 
@@ -190,11 +167,23 @@ export function LuxuryExperience() {
     </section>
 
     <section className="v4-cinema v4-cinema-portrait v4-cinema-night" aria-label="Cinematic automotive presentation">
+      <div className="v4-cinema-copy">
+        <p className="eyebrow">THE NIGHT SHIFT</p>
+        <h2>Nightfall gloss.<br/>Built to be noticed.</h2>
+        <p>A cinematic finish is not only about shine. It is about depth, clean reflections, protected surfaces, and a vehicle that looks intentional from every angle.</p>
+        <div className="v4-cinema-facts" aria-label="Service highlights">
+          <span><b>01</b> Mobile convenience</span>
+          <span><b>02</b> Owner-operated care</span>
+          <span><b>03</b> Protection-first process</span>
+        </div>
+        <a href="/book">Reserve your appointment</a>
+      </div>
       <div className="v4-cinema-media">
         <div className="v4-cinema-backdrop" aria-hidden="true" />
         <div className="v4-cinema-portrait-shell">
           <CinematicVideo src="/media/cinematic/corvette-night-v1.mp4?v=56" poster="/media/cinematic/corvette-night-v1-poster.webp" label="White Corvette arriving through fog at night" />
-          <div className="v4-cinema-frame" aria-hidden="true"><i /></div>
+          <div className="v4-cinema-frame" aria-hidden="true"><span>NIGHT / 01</span><i /></div>
+          <div className="v4-cinema-badge" aria-hidden="true"><span>30 FPS</span><strong>CINEMATIC</strong></div>
         </div>
       </div>
       <div className="v4-cinema-shade" />
@@ -264,6 +253,12 @@ export function LuxuryExperience() {
         <a href="tel:+18126295544">812-629-5544</a>
         <a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a>
         <span>By appointment only</span>
+      </div>
+      <div className="v4-footer-legal" aria-label="Legal information">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/ai-disclosure">AI Disclosure</a>
+        <a href="/sms-alerts">SMS Alerts</a>
       </div>
       <div className="v4-footer-bottom">
         <p>© 2026 Cole&apos;s Mobile Detailing</p>
