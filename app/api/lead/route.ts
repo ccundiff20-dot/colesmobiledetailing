@@ -99,6 +99,7 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ ...result, notificationSent });
   } catch (caught) {
+    console.error("Quote form dashboard delivery failed", caught);
     const timedOut = caught instanceof Error && caught.name === "AbortError";
     return NextResponse.json({
       error: timedOut ? "The request timed out. Please try again." : caught instanceof Error ? caught.message : "The request could not be sent. Please text or call Cole.",

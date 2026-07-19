@@ -24,6 +24,7 @@ type ChatResult = {
   quote?: Quote;
   leadSaved?: boolean;
   notificationSent?: boolean;
+  deliveryError?: boolean;
   assistantMode?: "ai" | "guided";
   error?: string;
 };
@@ -71,6 +72,7 @@ export function ColeAssistant() {
   const [alreadyNotified, setAlreadyNotified] = useState(false);
   const [conversationId, setConversationId] = useState(() => newId("chat"));
   const [error, setError] = useState("");
+  const [deliveryFailed, setDeliveryFailed] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -161,6 +163,7 @@ export function ColeAssistant() {
           messages: nextMessages.map(({ role, content: messageContent }) => ({ role, content: messageContent })),
           lead,
           alreadyNotified,
+          alreadySaved: leadSaved,
           attribution: readStoredAttribution(),
           termsAccepted: true,
           consentTimestamp,
@@ -172,6 +175,7 @@ export function ColeAssistant() {
       if (result.lead) setLead(result.lead);
       if (result.quote?.ready) setQuote(result.quote);
       if (result.leadSaved) setLeadSaved(true);
+      setDeliveryFailed(Boolean(result.deliveryError));
       if (result.notificationSent) setAlreadyNotified(true);
       setMessages((current) => [...current, {
         id: newId("assistant"),
@@ -199,6 +203,7 @@ export function ColeAssistant() {
     setAlreadyNotified(false);
     setConversationId(newId("chat"));
     setError("");
+    setDeliveryFailed(false);
   }
 
   return (
@@ -279,6 +284,13 @@ export function ColeAssistant() {
                 </div>
               )}
 
+              {deliveryFailed && !leadSaved && (
+                <div className="cole-assistant-saved is-error" role="alert">
+                  <span aria-hidden="true">!</span>
+                  <div><b>Not sent yet</b><small>The dashboard did not confirm receipt. Your details are still here.</small></div>
+                </div>
+              )}
+
               {quickReplies.length > 0 && (
                 <div className="cole-assistant-quick-replies">
                   {quickReplies.map((reply) => <button key={reply} type="button" onClick={() => void send(reply)}>{reply}</button>)}
@@ -304,6 +316,10 @@ export function ColeAssistant() {
               />
               <button type="button" onClick={() => void send(input)} disabled={sending || !input.trim()} aria-label="Send message">→</button>
             </div>
+
+            {deliveryFailed && !leadSaved && (
+              <button className="cole-assistant-retry" type="button" disabled={sending} onClick={() => void send("Retry sending my request to Cole")}>Retry sending to Cole</button>
+            )}
 
             <footer className="cole-assistant-footer">
               <button type="button" onClick={reset}>Start over</button>

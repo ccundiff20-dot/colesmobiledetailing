@@ -59,6 +59,17 @@ function readyForLead(lead: AssistantLead) {
   return Boolean(lead.name && hasContact(lead) && lead.vehicle && lead.service && lead.city && lead.contactAuthorized);
 }
 
+function missingLeadFields(lead: AssistantLead) {
+  return [
+    !lead.service ? "service" : "",
+    !lead.vehicle ? "vehicle year, make, and model" : "",
+    !lead.city ? "city" : "",
+    !lead.name ? "name" : "",
+    !hasContact(lead) ? "phone number or email" : "",
+    hasContact(lead) && !lead.contactAuthorized ? "permission to contact you" : "",
+  ].filter(Boolean);
+}
+
 function transcript(messages: ChatMessage[]) {
   return messages
     .slice(-14)
@@ -93,6 +104,14 @@ const supportedCities = [
 
 function extractKnownCity(value: string) {
   return supportedCities.find(([, pattern]) => pattern.test(value))?.[0] || "";
+}
+
+function removeUnverifiedDeliveryClaims(value: string) {
+  return value
+    .replace(/(?:thanks[—,! ]*)?(?:i(?:'ve| have)?|we(?:'ve| have)?)\s+(?:sent|submitted|saved|forwarded)\s+(?:your|the)\s+(?:request|information|details|quote)[^.!?]*[.!?]?/gi, "")
+    .replace(/cole (?:has|now has|received) (?:your|the) (?:request|information|details)[^.!?]*[.!?]?/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 
@@ -233,7 +252,9 @@ Hard rules:
 - Collect missing information naturally: name, phone or email, vehicle year/make/model, requested service, city, preferred date, and condition notes.
 - Before saving a lead, get explicit authorization for Cole to contact the customer about this specific request. Set contactAuthorized=true only when the customer clearly says yes/okay or otherwise grants permission. This is not recurring marketing consent.
 - Preserve already-known lead fields unless the customer corrects them.
-- Answer the current question and ask for only the most important missing detail.
+- Infer details from ordinary language, short replies, misspellings, and context. Do not make the customer repeat information that is already present.
+- Answer the current question, then ask for at most two closely related missing details in one short question so the process moves quickly.
+- Never say or imply that a request was sent, submitted, saved, forwarded, or received by Cole. The server adds a confirmation only after the dashboard verifies delivery.
 
 Known lead fields:
 ${JSON.stringify(lead)}`,
@@ -353,19 +374,23 @@ export async function POST(request: Request) {
     decision = fallbackDecision(messages, currentLead);
   }
 
-  const inferredCity = currentLead.city || extractKnownCity(latest);
-  const lead = mergeLead(
-    currentLead,
-    inferredCity && !decision.city ? { ...decision, city: inferredCity } : decision,
-  );
+  // Deterministic extraction backs up the model so natural, typo-heavy answers
+  // still fill fields that were already stated in the conversation.
+  const heuristicLead = fallbackDecision(messages, currentLead);
+  const inferredCity = currentLead.city || decision.city || extractKnownCity(messages.map((message) => message.content).join("\n"));
+  const lead = mergeLead(mergeLead(currentLead, heuristicLead), {
+    ...decision,
+    city: inferredCity,
+  });
   const quote = estimateQuote(lead);
   const consentTimestamp = clean(body.consentTimestamp, 40) || new Date().toISOString();
   const conversationId = clean(body.conversationId, 180) || `chat-${Date.now()}`;
-  const shouldCreate = readyForLead(lead) && (
-    decision.intent === "quote" || decision.intent === "booking" || decision.intent === "human" || decision.needsHuman
-  );
+  // Explicit contact authorization plus the required request details is itself
+  // enough to submit. A final "yes" must not lose the earlier quote/booking intent.
+  const shouldCreate = readyForLead(lead) && body.alreadySaved !== true;
   let leadSaved = false;
   let notificationSent = false;
+  let deliveryError = "";
 
   if (shouldCreate) {
     const source = "Website AI assistant";
@@ -412,22 +437,32 @@ export async function POST(request: Request) {
           notificationSent = false;
         }
       }
-    } catch {
+    } catch (error) {
       leadSaved = false;
+      deliveryError = error instanceof Error ? error.message : "The dashboard did not confirm receipt.";
     }
   }
 
-  let reply = decision.reply;
+  // Model text is conversational only; delivery status comes exclusively from
+  // the verified platform response below.
+  let reply = removeUnverifiedDeliveryClaims(decision.reply) || "Thanks—I have those details.";
   if (quote.ready && decision.intent === "quote") {
     reply = `${reply} The current starting estimate is ${moneyRange(quote)}. ${quote.reason}`;
   }
   if (leadSaved) {
     reply += " I saved the request for Cole to review. He’ll confirm the final price and availability.";
+  } else if (shouldCreate && deliveryError) {
+    reply = "I have all your details, but Cole’s dashboard did not confirm the request. Nothing was marked as sent. Please tap Retry or use the quote form.";
   } else if ((decision.needsHuman || decision.intent === "human") && !readyForLead(lead)) {
     if (!lead.contactAuthorized && hasContact(lead)) {
       reply += " Before I send it, is it okay for Cole to contact you about this request?";
     } else {
       reply += " I’ll need your name, a phone number or email, vehicle, service, and city before I can send the handoff.";
+    }
+  } else if (!readyForLead(lead)) {
+    const missing = missingLeadFields(lead);
+    if (missing.length > 0 && /send|submit|quote|book|schedule|contact|cole/i.test(latest)) {
+      reply += ` I still need ${missing.slice(0, 2).join(" and ")}${missing.length > 2 ? " first" : ""}.`;
     }
   }
 
@@ -437,6 +472,7 @@ export async function POST(request: Request) {
     quote,
     leadSaved,
     notificationSent,
+    deliveryError: Boolean(deliveryError),
     assistantMode,
   });
 }

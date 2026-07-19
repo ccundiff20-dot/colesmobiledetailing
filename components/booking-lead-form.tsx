@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { readStoredAttribution } from "@/components/lead-attribution";
 
 type FormState = {
@@ -34,7 +34,19 @@ const initialState: FormState = {
   contactAuthorized: false,
 };
 
+const SERVICES = [
+  "Interior detail",
+  "Full interior + exterior detail",
+  "Exterior detail",
+  "Paint correction / polish",
+  "Ceramic coating",
+  "RV or marine detailing",
+  "Fleet / commercial service",
+  "Not sure yet",
+];
+
 export function BookingLeadForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [form, setForm] = useState(initialState);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -50,6 +62,13 @@ export function BookingLeadForm() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!form.name.trim() || !form.city.trim() || !form.vehicle.trim() || !form.service) {
+      setStatus("error");
+      setMessage("Please complete the highlighted required details: name, city, vehicle, and service.");
+      formRef.current?.querySelector<HTMLInputElement | HTMLButtonElement>("[aria-invalid='true']")?.focus();
+      return;
+    }
 
     if (!form.phone.trim() && !form.email.trim()) {
       setStatus("error");
@@ -101,7 +120,7 @@ export function BookingLeadForm() {
   }
 
   return (
-    <form className="cmd-lead-form" onSubmit={submit} noValidate>
+    <form ref={formRef} className="cmd-lead-form" onSubmit={submit}>
       <div className="cmd-form-heading">
         <p>PRIVATE QUOTE REQUEST</p>
         <h2>Send the details once.</h2>
@@ -111,7 +130,7 @@ export function BookingLeadForm() {
       <div className="cmd-form-grid">
         <label>
           <span>Name *</span>
-          <input required autoComplete="name" value={form.name} onChange={(event) => update("name", event.target.value)} placeholder="Your name" />
+          <input required aria-invalid={status === "error" && !form.name.trim()} autoComplete="name" value={form.name} onChange={(event) => update("name", event.target.value)} placeholder="Your name" />
         </label>
         <label>
           <span>Phone</span>
@@ -123,27 +142,30 @@ export function BookingLeadForm() {
         </label>
         <label>
           <span>City *</span>
-          <input required autoComplete="address-level2" value={form.city} onChange={(event) => update("city", event.target.value)} placeholder="Evansville, Newburgh, Boonville…" />
+          <input required aria-invalid={status === "error" && !form.city.trim()} autoComplete="address-level2" value={form.city} onChange={(event) => update("city", event.target.value)} placeholder="Evansville, Newburgh, Boonville…" />
         </label>
         <label className="cmd-form-wide">
           <span>Vehicle *</span>
-          <input required value={form.vehicle} onChange={(event) => update("vehicle", event.target.value)} placeholder="Year, make, model, and size" />
+          <input required aria-invalid={status === "error" && !form.vehicle.trim()} value={form.vehicle} onChange={(event) => update("vehicle", event.target.value)} placeholder="Year, make, model, and size" />
         </label>
-        <label>
-          <span>Service *</span>
-          <select required value={form.service} onChange={(event) => update("service", event.target.value)}>
-            <option value="">Choose a service</option>
-            <option>Interior detail</option>
-            <option>Full interior + exterior detail</option>
-            <option>Exterior detail</option>
-            <option>Paint correction / polish</option>
-            <option>Ceramic coating</option>
-            <option>RV or marine detailing</option>
-            <option>Fleet / commercial service</option>
-            <option>Not sure yet</option>
-          </select>
-        </label>
-        <label>
+        <fieldset className="cmd-form-wide cmd-service-picker">
+          <legend>Service *</legend>
+          <div>
+            {SERVICES.map((service) => (
+              <button
+                key={service}
+                type="button"
+                className={form.service === service ? "is-selected" : ""}
+                aria-pressed={form.service === service}
+                aria-invalid={status === "error" && !form.service}
+                onClick={() => update("service", service)}
+              >
+                {service}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+        <label className="cmd-preferred-date">
           <span>Preferred date</span>
           <input type="date" min={minDate} value={form.preferredDate} onChange={(event) => update("preferredDate", event.target.value)} />
         </label>
@@ -170,13 +192,13 @@ export function BookingLeadForm() {
 
       <div className="cmd-consent-stack">
         <label className="cmd-consent-row">
-          <input type="checkbox" checked={form.contactAuthorized} onChange={(event) => update("contactAuthorized", event.target.checked)} />
+          <input required type="checkbox" checked={form.contactAuthorized} onChange={(event) => update("contactAuthorized", event.target.checked)} />
           <span>
             I authorize Cole&apos;s Mobile Detailing to contact me about this specific request using the phone number or email I provided. This does not enroll me in recurring marketing messages.
           </span>
         </label>
         <label className="cmd-consent-row">
-          <input type="checkbox" checked={form.acceptedTerms} onChange={(event) => update("acceptedTerms", event.target.checked)} />
+          <input required type="checkbox" checked={form.acceptedTerms} onChange={(event) => update("acceptedTerms", event.target.checked)} />
           <span>
             I understand this request does not confirm an appointment or final price, and I agree to the <Link href="/terms" target="_blank">Terms</Link> and acknowledge the <Link href="/privacy" target="_blank">Privacy Policy</Link>.
           </span>
