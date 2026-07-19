@@ -1,6 +1,6 @@
 {
   "name": "coles-mobile-detailing-luxury",
-  "version": "6.2.2",
+  "version": "6.2.4",
   "private": true,
   "scripts": {
     "dev": "next dev",

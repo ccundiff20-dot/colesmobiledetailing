@@ -122,9 +122,28 @@ export function ColeAssistant() {
     if (!open || !consentAccepted) return;
     requestAnimationFrame(() => {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-      inputRef.current?.focus();
+      // Mobile keyboards resize the visual viewport. Re-focusing after every
+      // reply makes the underlying page jump, so autofocus is desktop-only.
+      if (!window.matchMedia("(max-width: 900px), (pointer: coarse)").matches) {
+        inputRef.current?.focus({ preventScroll: true });
+      }
     });
   }, [open, consentAccepted, messages, sending]);
+
+  useEffect(() => {
+    if (!open || !window.matchMedia("(max-width: 900px), (pointer: coarse)").matches) return;
+    const htmlOverflow = document.documentElement.style.overflow;
+    const bodyOverflow = document.body.style.overflow;
+    const bodyOverscroll = document.body.style.overscrollBehavior;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "none";
+    return () => {
+      document.documentElement.style.overflow = htmlOverflow;
+      document.body.style.overflow = bodyOverflow;
+      document.body.style.overscrollBehavior = bodyOverscroll;
+    };
+  }, [open]);
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {

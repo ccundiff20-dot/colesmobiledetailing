@@ -132,7 +132,7 @@ export function LuxuryExperience() {
     <header className="nav-shell v4-nav">
       <a className="brand" href="#top"><Image className="brand-badge" src="/images/brand/coles-mobile-detailing-badge-small.webp" alt="" width={42} height={42} /><span>COLE&apos;S</span><small>MOBILE DETAILING</small></a>
       <nav className="desktop-nav">{nav.slice(0, 4).map(([label, href]) => <a key={label} href={href}>{label}</a>)}</nav>
-      <a className="book-pill" href="sms:+18126295544">Book a Detail</a>
+      <a className="book-pill" href="/book">Book a Detail</a>
       <button className="menu-button" onClick={() => setMenu(true)} aria-label="Open navigation">Menu</button>
     </header>
 
@@ -159,7 +159,7 @@ export function LuxuryExperience() {
         </div>
         <motion.div className="v4-hero-bottom" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .82 }}>
           <div className="v4-hero-summary"><span>01</span><p>Premium mobile detailing, paint correction, and ceramic protection—built around deeper gloss, sharper reflections, and lasting protection.</p></div>
-          <div className="v4-hero-actions"><a href="sms:+18126295544">Book your detail</a><a href="/gallery">Explore the work</a></div>
+          <div className="v4-hero-actions"><a href="/book">Book your detail</a><a href="/gallery">Explore the work</a></div>
         </motion.div>
       </motion.div>
       <div className="v4-hero-proof"><span>5.0</span><div><b>★★★★★</b><small>80+ GOOGLE REVIEWS</small></div></div>

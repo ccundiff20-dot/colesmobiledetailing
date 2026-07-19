@@ -698,11 +698,12 @@
 .cole-assistant-footer button:hover,.cole-assistant-footer a:hover{color:#fff}
 .cole-assistant-error{position:absolute;left:12px;right:12px;bottom:70px;margin:0;padding:8px 10px;background:#2b1414;color:#ffb5b5;font-size:.62rem}
 @media(max-width:700px){
-  .cole-assistant{right:12px;bottom:12px}
-  .cole-assistant-launcher{min-width:0;width:58px;height:58px;padding:8px;grid-template-columns:1fr;border-radius:50%}
+  .cole-assistant{right:14px;bottom:calc(78px + env(safe-area-inset-bottom))}
+  .cole-assistant-launcher{min-width:0;width:54px;height:54px;padding:7px;grid-template-columns:1fr;border-radius:50%;box-shadow:0 12px 38px rgba(0,0,0,.55)}
   .cole-assistant-launcher-mark{width:40px;height:40px;margin:auto}
   .cole-assistant-launcher-copy,.cole-assistant-launcher-status{display:none}
-  .cole-assistant-panel{position:fixed;left:8px;right:8px;bottom:8px;width:auto;height:min(710px,calc(100dvh - 16px));transform-origin:bottom center}
+  .cole-assistant-panel{position:fixed;left:8px;right:8px;top:max(8px,env(safe-area-inset-top));bottom:max(8px,env(safe-area-inset-bottom));width:auto;height:auto;max-height:none;transform-origin:bottom center;overscroll-behavior:contain}
+  .cole-assistant-messages{overscroll-behavior:contain;scroll-behavior:auto}
   .cole-assistant.is-open .cole-assistant-launcher{opacity:0;pointer-events:none}
   .cole-assistant-header{padding-top:max(16px,env(safe-area-inset-top))}
   .cole-assistant-composer{padding-bottom:max(10px,env(safe-area-inset-bottom))}
