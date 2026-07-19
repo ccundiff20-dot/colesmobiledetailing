@@ -79,6 +79,22 @@ function previousAssistantMessage(messages: ChatMessage[]) {
   return "";
 }
 
+const supportedCities = [
+  ["Evansville", /\bevansville\b/i],
+  ["Newburgh", /\bnewburgh\b/i],
+  ["Boonville", /\bboonville\b/i],
+  ["Chandler", /\bchandler\b/i],
+  ["Haubstadt", /\bhaubstadt\b/i],
+  ["Fort Branch", /\bfort\s+branch\b/i],
+  ["Princeton", /\bprinceton\b/i],
+  ["Poseyville", /\bposeyville\b/i],
+  ["Mount Vernon", /\b(?:mount|mt\.?)[\s-]+vernon\b/i],
+] as const;
+
+function extractKnownCity(value: string) {
+  return supportedCities.find(([, pattern]) => pattern.test(value))?.[0] || "";
+}
+
 
 function fallbackDecision(messages: ChatMessage[], lead: AssistantLead): ModelDecision {
   const latest = lastUserMessage(messages);
@@ -92,7 +108,7 @@ function fallbackDecision(messages: ChatMessage[], lead: AssistantLead): ModelDe
     const rawName = latest.match(/(?:my name is|i'm|i am)\s+([a-z][a-z '-]{0,40})/i)?.[1] || "";
     detected.name = rawName.split(/\s+(?:and|my|phone|number|email|i need|i want)\b/i)[0].trim();
   }
-  if (!detected.city) detected.city = latest.match(/(?:in|located in|i'm in|im in)\s+(evansville|newburgh|boonville|chandler|haubstadt|fort branch|princeton|poseyville|mount vernon)/i)?.[1] || "";
+  if (!detected.city) detected.city = extractKnownCity(latest);
   if (!detected.service) {
     if (/ceramic|coating/.test(lower)) detected.service = /(?:one|1)[ -]?year/.test(lower) ? "One-year ceramic coating" : /(?:five|5|seven|7)[ -]?year/.test(lower) ? "Seven-year ceramic coating" : "Ceramic coating";
     else if (/paint correction|polish|buff/.test(lower)) detected.service = "Paint correction / polish";
@@ -201,6 +217,7 @@ Tone:
 
 Business facts:
 - Cole's Mobile Detailing serves Evansville, Newburgh, Boonville, and nearby Southern Indiana areas.
+- Treat natural statements such as "the detail will be in Boonville," "I'm located in Boonville," or simply "Boonville" as the city field. Do not ask for the city again once it is known.
 - Appointments generally need at least 24 hours notice.
 - Services include interior detailing, full interior/exterior detailing, exterior detailing, paint correction/polishing, ceramic coatings, RV/marine work, and fleets.
 - Final pricing depends on vehicle size, actual condition, access, location, and scope.
@@ -336,7 +353,11 @@ export async function POST(request: Request) {
     decision = fallbackDecision(messages, currentLead);
   }
 
-  const lead = mergeLead(currentLead, decision);
+  const inferredCity = currentLead.city || extractKnownCity(latest);
+  const lead = mergeLead(
+    currentLead,
+    inferredCity && !decision.city ? { ...decision, city: inferredCity } : decision,
+  );
   const quote = estimateQuote(lead);
   const consentTimestamp = clean(body.consentTimestamp, 40) || new Date().toISOString();
   const conversationId = clean(body.conversationId, 180) || `chat-${Date.now()}`;

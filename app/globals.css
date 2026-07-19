@@ -606,7 +606,8 @@
 .cmd-form-grid input,.cmd-form-grid select,.cmd-form-grid textarea{width:100%;min-width:0;border:0;border-bottom:1px solid rgba(255,255,255,.2);border-radius:0;background:transparent;color:#fff;padding:13px 0;font:inherit;outline:none;transition:border-color .2s ease,background .2s ease}
 .cmd-form-grid input::placeholder,.cmd-form-grid textarea::placeholder{color:#686f72}
 .cmd-form-grid input:focus,.cmd-form-grid select:focus,.cmd-form-grid textarea:focus{border-color:var(--acid)}
-.cmd-form-grid select{color-scheme:dark}
+.cmd-form-grid select{color-scheme:dark;background-color:#0f1112;color:#fff;padding-left:10px;padding-right:10px}
+.cmd-form-grid select option{background:#0f1112;color:#fff}
 .cmd-form-grid textarea{min-height:128px;resize:vertical;line-height:1.6}
 .cmd-form-wide{grid-column:1/-1}
 .cmd-honeypot{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
