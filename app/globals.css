@@ -721,3 +721,102 @@
 .cole-assistant-launcher-mark,.cole-assistant-avatar{font-size:.65rem;letter-spacing:-.02em}.cole-assistant-notice a{color:#e8f1c5;text-decoration:underline;text-underline-offset:2px}.cole-assistant-consent{grid-row:2/-1;overflow-y:auto;padding:28px 24px 24px;background:linear-gradient(180deg,rgba(213,255,69,.035),transparent 45%)}.cole-assistant-consent-kicker{margin:0 0 13px!important;color:var(--acid)!important;font-size:.55rem!important;letter-spacing:.17em!important;text-transform:uppercase}.cole-assistant-consent h3{margin:0 0 16px;font-size:1.85rem;line-height:.95;letter-spacing:-.045em}.cole-assistant-consent>p{margin:0;color:#b3bbbd;font-size:.78rem;line-height:1.62}.cole-assistant-consent ul{margin:22px 0;padding:0;list-style:none}.cole-assistant-consent li{position:relative;padding:10px 0 10px 20px;border-top:1px solid rgba(255,255,255,.08);color:#919a9c;font-size:.68rem;line-height:1.5}.cole-assistant-consent li::before{content:"";position:absolute;left:0;top:17px;width:6px;height:6px;border-radius:50%;background:var(--acid)}.cole-assistant-consent>button{width:100%;min-height:48px;border:0;background:var(--acid);color:#08090a;font-weight:850;cursor:pointer}.cole-assistant-consent>small{display:block;margin-top:14px;color:#737d7f;font-size:.58rem;line-height:1.55}.cole-assistant-consent a{color:#dce2e3;text-decoration:underline;text-underline-offset:2px}
 
 @media(max-width:900px){.inner-footer{grid-template-columns:1fr;text-align:center}.inner-footer>div:nth-child(2),.inner-footer-legal{text-align:center;align-items:center}.v4-footer-legal{grid-column:auto;flex-wrap:wrap;justify-content:center!important;padding-top:22px}.legal-hero{padding:130px 6vw 70px;text-align:left}.legal-layout{grid-template-columns:1fr;padding:14vw 6vw 22vw}.legal-index{display:none}.legal-content>section{grid-template-columns:34px 1fr;gap:14px;padding-bottom:42px;margin-bottom:42px}.legal-content h2{font-size:2.25rem}.legal-content p,.legal-content li{font-size:.84rem}.cole-assistant-consent{padding:24px 20px}}
+
+/* V6.3 ceramic coating care and maintenance services */
+.care-intro{display:grid;grid-template-columns:1.05fr .95fr;gap:9vw;padding:10vw 5vw;background:#0a0c0d}
+.care-intro>div:first-child>p,.maintenance-menu>header>p,.care-avoid-copy>p,.care-faq>header>p{margin:0;color:var(--acid);font-size:.6rem;letter-spacing:.19em;text-transform:uppercase}
+.care-intro h2,.maintenance-menu>header h2,.care-avoid-copy h2,.care-faq>header h2{margin:18px 0 0;font-size:clamp(3.4rem,7vw,7.6rem);line-height:.88;letter-spacing:-.075em}
+.care-intro-copy{align-self:end;border-top:1px solid rgba(255,255,255,.16)}
+.care-intro-copy strong{display:block;margin-top:28px;color:#fff;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.care-intro-copy p{margin:10px 0 0;color:#b4bbbd;line-height:1.75}
+.care-intro-copy small{display:block;margin-top:34px;padding:22px 0;border-top:1px solid rgba(255,255,255,.1);color:#747d80;font-size:.65rem;line-height:1.7}
+.care-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#eceae4;color:#08090a}
+.care-card-grid article{min-height:430px;padding:5vw 3.5vw;border-right:1px solid #c9c8c2}
+.care-card-grid article:last-child{border-right:0}
+.care-card-grid article>span{font-size:.58rem;letter-spacing:.14em;color:#777c7d}
+.care-card-grid h2{margin:70px 0 22px;font-size:clamp(2rem,3.2vw,3.7rem);line-height:.95;letter-spacing:-.055em}
+.care-card-grid p{margin:0;color:#656a6b;line-height:1.75}
+.care-image-break{position:relative;height:min(76vw,900px);overflow:hidden}
+.care-image-break img{object-fit:cover;object-position:center 58%}
+.care-image-break>div{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.7))}
+.care-image-break>p{position:absolute;left:5vw;right:5vw;bottom:4vw;margin:0;color:#fff;font-size:.62rem;letter-spacing:.21em;text-transform:uppercase}
+.maintenance-menu{padding:11vw 5vw;background:#0b0d0e}
+.maintenance-menu>header{display:grid;grid-template-columns:1fr 1fr;column-gap:8vw;align-items:end;margin-bottom:7vw}
+.maintenance-menu>header>p{grid-column:1/-1}
+.maintenance-menu>header h2{max-width:920px}
+.maintenance-menu>header>span{max-width:560px;padding-bottom:8px;color:#9ba3a5;line-height:1.75}
+.maintenance-package-list{border-top:1px solid rgba(255,255,255,.16)}
+.maintenance-package-list>article{display:grid;grid-template-columns:.9fr 1.15fr .65fr;gap:5vw;padding:5.5vw 0;border-bottom:1px solid rgba(255,255,255,.16)}
+.maintenance-package-title{display:grid;grid-template-columns:38px 1fr;gap:18px}
+.maintenance-package-title>span{padding-top:8px;color:var(--acid);font-size:.56rem;letter-spacing:.12em}
+.maintenance-package-title p{margin:0 0 15px;color:#7d8588;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase}
+.maintenance-package-title h3{margin:0;font-size:clamp(2.6rem,4.7vw,5.5rem);line-height:.88;letter-spacing:-.065em}
+.maintenance-package-title small{display:block;margin-top:21px;color:#b1b8ba;font-size:.7rem;line-height:1.5}
+.maintenance-package-list ul{margin:0;padding:0;list-style:none}
+.maintenance-package-list li{position:relative;padding:13px 0 13px 21px;border-top:1px solid rgba(255,255,255,.08);color:#a9b0b2;font-size:.78rem;line-height:1.45}
+.maintenance-package-list li::before{content:"";position:absolute;left:0;top:20px;width:6px;height:6px;border-radius:50%;background:var(--acid)}
+.maintenance-prices{align-self:start}
+.maintenance-prices>div{display:flex;justify-content:space-between;gap:18px;padding:15px 0;border-top:1px solid rgba(255,255,255,.13)}
+.maintenance-prices span{color:#9aa2a4;font-size:.69rem}
+.maintenance-prices strong{color:#fff;font-size:1rem}
+.maintenance-fine-print{display:flex;justify-content:space-between;gap:5vw;align-items:center;padding-top:35px}
+.maintenance-fine-print p{max-width:790px;margin:0;color:#747d80;font-size:.68rem;line-height:1.75}
+.maintenance-fine-print a{flex:0 0 auto;padding-bottom:8px;border-bottom:1px solid var(--acid);color:#fff;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+.care-avoid-section{display:grid;grid-template-columns:.85fr 1.15fr;gap:8vw;padding:11vw 5vw;background:#eeece6;color:#08090a}
+.care-avoid-copy>p{color:#5d6364}
+.care-do-dont{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-self:end}
+.care-do-dont article{padding:34px;background:#fff;border-top:4px solid #0a0b0c}
+.care-do-dont article:last-child{background:#111314;color:#fff;border-top-color:var(--acid)}
+.care-do-dont article>span{font-size:.58rem;letter-spacing:.17em;text-transform:uppercase}
+.care-do-dont ul{margin:30px 0 0;padding:0;list-style:none}
+.care-do-dont li{padding:14px 0;border-top:1px solid rgba(0,0,0,.13);font-size:.75rem;line-height:1.5}
+.care-do-dont article:last-child li{border-top-color:rgba(255,255,255,.13);color:#c4c9ca}
+.care-faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:8vw;padding:11vw 5vw}
+.care-faq>header{position:sticky;top:120px;align-self:start}
+.care-faq>div{border-top:1px solid rgba(255,255,255,.16)}
+.care-faq article{display:grid;grid-template-columns:45px 1fr;gap:18px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.care-faq article>span{padding-top:7px;color:var(--acid);font-size:.56rem}
+.care-faq h3{margin:0;font-size:clamp(1.45rem,2.6vw,2.6rem);line-height:1;letter-spacing:-.045em}
+.care-faq article p{margin:16px 0 0;color:#9ba3a5;line-height:1.7}
+.care-page-cta>div{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.care-page-cta>div a:last-child{background:transparent;color:#08090a;border:1px solid #08090a}
+
+@media(max-width:1000px){
+  .care-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .care-card-grid article:nth-child(2){border-right:0}
+  .care-card-grid article:nth-child(-n+2){border-bottom:1px solid #c9c8c2}
+  .maintenance-package-list>article{grid-template-columns:1fr 1fr}
+  .maintenance-package-title{grid-column:1/-1}
+}
+@media(max-width:700px){
+  .care-intro,.maintenance-menu>header,.care-avoid-section,.care-faq{grid-template-columns:1fr}
+  .care-intro{padding:20vw 6vw;gap:14vw;text-align:center}
+  .care-intro-copy{text-align:left}
+  .care-card-grid{grid-template-columns:1fr}
+  .care-card-grid article{min-height:0;padding:16vw 7vw;border-right:0;border-bottom:1px solid #c9c8c2!important;text-align:center}
+  .care-card-grid h2{margin-top:40px}
+  .care-image-break{height:120vw}
+  .care-image-break>p{bottom:7vw;text-align:center;line-height:1.7}
+  .maintenance-menu{padding:20vw 6vw}
+  .maintenance-menu>header{gap:30px;text-align:center;margin-bottom:16vw}
+  .maintenance-menu>header>span{margin:auto}
+  .maintenance-package-list>article{grid-template-columns:1fr;padding:16vw 0;gap:10vw}
+  .maintenance-package-title{grid-column:auto;text-align:center;grid-template-columns:1fr}
+  .maintenance-package-title>span{padding:0}
+  .maintenance-package-list ul,.maintenance-prices{width:100%}
+  .maintenance-fine-print{display:grid;text-align:center;padding-top:35px}
+  .maintenance-fine-print a{justify-self:center}
+  .care-avoid-section{padding:20vw 6vw;gap:13vw;text-align:center}
+  .care-do-dont{grid-template-columns:1fr;text-align:left}
+  .care-faq{padding:20vw 6vw;gap:13vw}
+  .care-faq>header{position:static;text-align:center}
+  .care-page-cta>div{display:grid;grid-template-columns:1fr}
+}
+.coating-care-link{display:grid;grid-template-columns:1fr 1fr;gap:8vw;padding:10vw 5vw;background:#eceae4;color:#08090a}
+.coating-care-link>div:first-child>p{margin:0;color:#626869;font-size:.58rem;letter-spacing:.17em;text-transform:uppercase}
+.coating-care-link h2{margin:18px 0 0;font-size:clamp(3.3rem,6.5vw,7rem);line-height:.89;letter-spacing:-.07em}
+.coating-care-link>div:last-child{align-self:end}
+.coating-care-link>div:last-child p{max-width:560px;color:#63696a;line-height:1.75}
+.coating-care-link a{display:inline-block;margin-top:24px;padding-bottom:8px;border-bottom:1px solid #08090a;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+.service-note-actions{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+@media(max-width:700px){.coating-care-link{grid-template-columns:1fr;padding:20vw 6vw;gap:10vw;text-align:center}.coating-care-link>div:last-child p{margin-left:auto;margin-right:auto}.service-note-actions{display:grid;gap:20px}}

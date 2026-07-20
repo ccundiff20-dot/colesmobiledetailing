@@ -8,6 +8,7 @@ export function InnerNav() {
       <nav>
         <Link href="/services">Services</Link>
         <Link href="/ceramic-coatings">Ceramic</Link>
+        <Link href="/ceramic-care">Care</Link>
         <Link href="/paint-correction">Correction</Link>
         <Link href="/gallery">Gallery</Link>
         <Link href="/about">About</Link>
@@ -29,6 +30,7 @@ export function InnerFooter() {
         <Link href="/services">Services</Link>
         <Link href="/rv-marine">RV &amp; Marine</Link>
         <Link href="/fleet">Fleet</Link>
+        <Link href="/ceramic-care">Ceramic Care</Link>
         <a href="tel:+18126295544">812-629-5544</a>
         <a href="mailto:ccundiff20@gmail.com">ccundiff20@gmail.com</a>
         <a href="https://digitalforgeweb.com" target="_blank" rel="noreferrer">Website by Digital Forge</a>

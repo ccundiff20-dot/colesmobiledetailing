@@ -1,4 +1,4 @@
-# Cole's Mobile Detailing v6.2 — Legal, AI, CRM & SMS Upgrade
+# Cole's Mobile Detailing v6.3 — Ceramic Care, Legal, AI, CRM & SMS
 
 Production-oriented Next.js website for Cole's Mobile Detailing with:
 

@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/services",
     "/ceramic-coatings",
+    "/ceramic-care",
     "/paint-correction",
     "/rv-marine",
     "/fleet",

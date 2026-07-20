@@ -69,16 +69,28 @@ export function estimateQuote(lead: AssistantLead): QuoteDecision {
     [low, high] = tier === "car" ? [199, 229] : tier === "midsize" ? [249, 279] : [279, 349];
   } else if (/full|interior.*exterior|inside.*outside/.test(service)) {
     [low, high] = tier === "car" ? [299, 329] : tier === "midsize" ? [349, 379] : [399, 449];
+  } else if (/maintenance detail|inside.*outside maintenance/.test(service)) {
+    [low, high] = tier === "car" ? [169, 169] : tier === "midsize" ? [199, 199] : [229, 229];
+    reason = "Maintenance pricing applies to vehicles already kept in good condition; deep cleaning is quoted separately.";
+  } else if (/coating reset|ceramic reset|6 month/.test(service)) {
+    [low, high] = tier === "car" ? [179, 179] : tier === "midsize" ? [209, 209] : [239, 239];
+    reason = "This service restores coating performance through safe cleaning, inspection, and a compatible booster.";
+  } else if (/maintenance wash|ceramic wash|coating wash/.test(service)) {
+    [low, high] = tier === "car" ? [99, 99] : tier === "midsize" ? [119, 119] : [139, 139];
+    reason = "Maintenance wash pricing applies to coated vehicles in routine condition.";
   } else if (/exterior|wash|wax/.test(service) && !/correction|polish|ceramic/.test(service)) {
     [low, high] = tier === "car" ? [175, 189] : tier === "midsize" ? [199, 219] : [220, 259];
   } else if (/one year|1 year/.test(service) && /ceramic|coating/.test(service)) {
-    [low, high] = tier === "car" ? [399, 549] : tier === "midsize" ? [499, 649] : [599, 799];
+    [low, high] = tier === "car" ? [400, 549] : tier === "midsize" ? [499, 649] : [599, 799];
     reason = "This includes a starting coating estimate; paint preparation can change the final price.";
-  } else if (/five year|5 year|seven year|7 year/.test(service) && /ceramic|coating/.test(service)) {
-    [low, high] = tier === "car" ? [799, 1350] : tier === "midsize" ? [949, 1550] : [1099, 1800];
+  } else if (/five year|5 year/.test(service) && /ceramic|coating/.test(service)) {
+    [low, high] = tier === "car" ? [975, 1350] : tier === "midsize" ? [1099, 1499] : [1249, 1649];
     reason = "The final coating package depends on whether the paint needs a one-step or two-step correction.";
+  } else if (/seven year|7 year/.test(service) && /ceramic|coating/.test(service)) {
+    [low, high] = tier === "car" ? [1350, 1550] : tier === "midsize" ? [1499, 1749] : [1649, 1899];
+    reason = "The final coating package depends on vehicle size and the paint correction required before application.";
   } else if (/ceramic|coating/.test(service)) {
-    [low, high] = tier === "car" ? [399, 1350] : tier === "midsize" ? [499, 1550] : [599, 1800];
+    [low, high] = tier === "car" ? [400, 1550] : tier === "midsize" ? [499, 1749] : [599, 1899];
     label = "Coating options";
     reason = "Cole will narrow this down after confirming coating duration and paint preparation needs.";
   } else if (/paint correction|polish|buff/.test(service)) {

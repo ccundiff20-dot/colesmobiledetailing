@@ -9,7 +9,7 @@ const services = [
   { id: "01", name: "Signature Interior", price: "From $199", bestFor: "Best for daily drivers", image: "/images/enhanced/interior detail.webp", copy: "A complete cabin reset with deep cleaning, fabric and leather care, glass, and careful attention to every touchpoint." },
   { id: "02", name: "Full Transformation", price: "From $299", bestFor: "Best all-around reset", image: "/images/enhanced/zi6 corvette.webp", copy: "Interior and exterior refinement, decontamination, gloss enhancement, and lasting protection in one complete service." },
   { id: "03", name: "Paint Correction", price: "From $500", bestFor: "Best for swirls and haze", image: "/images/enhanced/black corvette.webp", copy: "Precision polishing that reduces swirls, haze, and defects while restoring depth, clarity, and reflection." },
-  { id: "04", name: "Ceramic Protection", price: "From $399", bestFor: "Best for lasting protection", image: "/media-v27/images/foam-supercar-front.webp", copy: "Hydrophobic protection, richer color, easier maintenance, and a finish designed to stay visually alive." },
+  { id: "04", name: "Ceramic Protection", price: "From $400", bestFor: "Best for lasting protection", image: "/media-v27/images/foam-supercar-front.webp", copy: "Hydrophobic protection, richer color, easier maintenance, and a finish designed to stay visually alive." },
 ];
 
 const reviews = [
@@ -117,7 +117,7 @@ export function LuxuryExperience() {
   const copyY = useTransform(scrollYProgress, [0, 1], [0, -85]);
   const selected = services[active];
   const nav = useMemo(() => [
-    ["Services", "/services"], ["Ceramic", "/ceramic-coatings"], ["Gallery", "/gallery"], ["About", "/about"], ["Book", "/book"],
+    ["Services", "/services"], ["Ceramic", "/ceramic-coatings"], ["Care", "/ceramic-care"], ["Gallery", "/gallery"], ["About", "/about"], ["Book", "/book"],
   ], []);
 
   useEffect(() => {
