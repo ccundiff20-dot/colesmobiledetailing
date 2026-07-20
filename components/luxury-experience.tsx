@@ -4,12 +4,13 @@ import Image from "next/image";
 import Lenis from "lenis";
 import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { stockImages } from "@/lib/stock-images";
 
 const services = [
-  { id: "01", name: "Signature Interior", price: "From $199", bestFor: "Best for daily drivers", image: "/images/enhanced/interior detail.webp", copy: "A complete cabin reset with deep cleaning, fabric and leather care, glass, and careful attention to every touchpoint." },
-  { id: "02", name: "Full Transformation", price: "From $299", bestFor: "Best all-around reset", image: "/images/enhanced/zi6 corvette.webp", copy: "Interior and exterior refinement, decontamination, gloss enhancement, and lasting protection in one complete service." },
-  { id: "03", name: "Paint Correction", price: "From $500", bestFor: "Best for swirls and haze", image: "/images/enhanced/black corvette.webp", copy: "Precision polishing that reduces swirls, haze, and defects while restoring depth, clarity, and reflection." },
-  { id: "04", name: "Ceramic Protection", price: "From $400", bestFor: "Best for lasting protection", image: "/media-v27/images/foam-supercar-front.webp", copy: "Hydrophobic protection, richer color, easier maintenance, and a finish designed to stay visually alive." },
+  { id: "01", name: "Signature Interior", price: "From $199", bestFor: "Best for daily drivers", image: stockImages.luxuryInterior, copy: "A complete cabin reset with deep cleaning, fabric and leather care, glass, and careful attention to every touchpoint." },
+  { id: "02", name: "Full Transformation", price: "From $299", bestFor: "Best all-around reset", image: stockImages.wetPerformanceCar, copy: "Interior and exterior refinement, decontamination, gloss enhancement, and lasting protection in one complete service." },
+  { id: "03", name: "Paint Correction", price: "From $500", bestFor: "Best for swirls and haze", image: stockImages.paintPolishing, copy: "Precision polishing that reduces swirls, haze, and defects while restoring depth, clarity, and reflection." },
+  { id: "04", name: "Ceramic Protection", price: "From $400", bestFor: "Best for lasting protection", image: stockImages.foamWash, copy: "Hydrophobic protection, richer color, easier maintenance, and a finish designed to stay visually alive." },
 ];
 
 const reviews = [
@@ -137,7 +138,7 @@ export function LuxuryExperience() {
     </header>
 
     <AnimatePresence>{menu && <motion.div className="v4-menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <div className="v4-menu-image"><Image src="/media-v27/images/porsche-rear.webp" alt="" fill sizes="100vw" /></div>
+      <div className="v4-menu-image"><Image src={stockImages.garageSupercar} alt="Black performance car in a modern garage" fill sizes="100vw" /></div>
       <div className="v4-menu-grid" aria-hidden="true" />
       <div className="v4-menu-top"><span>COLE'S / MOBILE DETAILING</span><span>NEWBURGH · EVANSVILLE</span></div>
       <button onClick={() => setMenu(false)}><span>Close</span><i>×</i></button>
@@ -149,7 +150,7 @@ export function LuxuryExperience() {
     </motion.div>}</AnimatePresence>
 
     <section id="top" ref={heroRef} className="v4-hero">
-      <motion.div className="v4-hero-media" style={{ y: imageY, scale: imageScale }}><Image src="/media-v27/images/porsche-rear.webp" alt="Porsche with a high-gloss detailed finish" fill priority quality={62} sizes="100vw" /></motion.div>
+      <motion.div className="v4-hero-media" style={{ y: imageY, scale: imageScale }}><Image src={stockImages.luxuryHero} alt="Black luxury vehicle with a refined finish" fill priority quality={72} sizes="100vw" /></motion.div>
       <div className="v4-hero-overlay" /><div className="v4-hero-grid" /><div className="v4-scan" />
       <motion.div className="v4-hero-copy" style={{ y: copyY }}>
         <div className="v4-hero-kicker"><motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }}>NEWBURGH · EVANSVILLE · SOUTHERN INDIANA</motion.p><span>EST. 2022</span></div>
@@ -233,7 +234,7 @@ export function LuxuryExperience() {
     </section>
 
     <section className="v4-final">
-      <div className="v4-final-media"><Image src="/media-v27/images/porsche-wheel.webp" alt="Detailed performance car wheel and bodywork" fill sizes="100vw" /></div><div className="v4-final-overlay" />
+      <div className="v4-final-media"><Image src={stockImages.performanceWheel} alt="Detailed performance wheel and brake assembly" fill sizes="100vw" /></div><div className="v4-final-overlay" />
       <div className="v4-final-copy"><p>YOUR VEHICLE. ELEVATED.</p><h2>Make every reflection count.</h2><div><a href="sms:+18126295544">Text to book</a><a href="tel:+18126295544">Call 812-629-5544</a></div></div>
     </section>
 

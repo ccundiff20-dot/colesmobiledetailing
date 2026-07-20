@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BookingLeadForm } from "@/components/booking-lead-form";
 import { InnerFooter, InnerNav, PageHero } from "@/components/inner-page";
+import { stockImages } from "@/lib/stock-images";
 
 export const metadata: Metadata = {
   title: "Book a Detail",
@@ -21,7 +22,9 @@ export default function BookPage() {
         eyebrow="REQUEST AN APPOINTMENT"
         title="Tell us what the vehicle needs."
         copy="Send the details once. Your request is saved directly into Cole's private lead dashboard for a faster, more organized follow-up."
-        image="/media-v27/images/mercedes-front.webp"
+        image={stockImages.luxuryInterior}
+        imageAlt="Premium vehicle interior with illuminated controls"
+        imagePosition="center 62%"
       />
 
       <section className="book-page cmd-booking-layout">

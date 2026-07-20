@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { InnerFooter, InnerNav, PageHero } from "@/components/inner-page";
+import { stockImages } from "@/lib/stock-images";
 
 export const metadata: Metadata = {
   title: "Ceramic Coating Care & Maintenance",
@@ -140,7 +141,9 @@ export default function CeramicCarePage() {
         eyebrow="OWNER CARE GUIDE"
         title="Keep the coating performing like it should."
         copy="A ceramic coating is low-maintenance—not no-maintenance. Follow this care plan to preserve gloss, water behavior, and protection for the full term."
-        image="/media-v27/images/white-camaro.webp"
+        image={stockImages.foamWash}
+        imageAlt="Coated black vehicle receiving a careful foam wash"
+        imagePosition="center 52%"
       />
 
       <section className="care-intro">
@@ -172,8 +175,8 @@ export default function CeramicCarePage() {
 
       <section className="care-image-break">
         <Image
-          src="/media-v27/images/foam-supercar-side.webp"
-          alt="A performance vehicle receiving a careful foam hand wash"
+          src={stockImages.maintenanceRinse}
+          alt="A coated vehicle receiving a careful wheel and body rinse"
           fill
           sizes="100vw"
         />

@@ -45,6 +45,6 @@ export function InnerFooter() {
   );
 }
 
-export function PageHero({ eyebrow, title, copy, image }: { eyebrow:string; title:string; copy:string; image:string }) {
-  return <section className="page-hero"><Image src={image} alt="" fill priority sizes="100vw" /><div className="page-hero-shade"/><div className="page-hero-copy"><p>{eyebrow}</p><h1>{title}</h1><span>{copy}</span></div></section>;
+export function PageHero({ eyebrow, title, copy, image, imageAlt = "", imagePosition = "center" }: { eyebrow:string; title:string; copy:string; image:string; imageAlt?:string; imagePosition?:string }) {
+  return <section className="page-hero"><Image src={image} alt={imageAlt} fill priority sizes="100vw" style={{ objectPosition: imagePosition }} /><div className="page-hero-shade"/><div className="page-hero-copy"><p>{eyebrow}</p><h1>{title}</h1><span>{copy}</span></div></section>;
 }
